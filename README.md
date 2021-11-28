@@ -38,7 +38,7 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 
 # TODO
 
-- [] Get nmap file to scan
+- [ ] Get nmap file to scan
 
 # Credits
 
