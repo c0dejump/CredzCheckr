@@ -14,9 +14,12 @@ def cms_input(cms):
 	"wordpress": "log:pwd",
 	"drupal": "name:pass",
 	"ez publish": "Login:Password",
-	"expressionengine":  "username:password"
+	"expressionengine":  "username:password",
+	"joomla": "username:password",
+	"shopify":"",
+	"webflow cms": "",
 	}
-	if cms_value[cms]:
+	if cms_value[cms] != "":
 		return cms_value[cms]
 	else:
 		return False

@@ -46,11 +46,11 @@ class finger_print:
                     else:
                         return False
             except Exception:
-                #traceback.print_exc() #DEBUG
+                traceback.print_exc() #DEBUG
                 pass
 
 
-    def other_check(self, url):
+    def other_check(self, url, onlypass=False, http_auth=False):
         print(" {} Search technologie".format(INFO))
 
         techno_found = False
@@ -64,7 +64,7 @@ class finger_print:
             fav_found = False
             favicon = codecs.encode(req_fav.content,"base64")
             hash_fav = mmh3.hash(favicon)
-            print("   {} Favicon.ico hash: {}".format(action_found, hash_fav))
+            print(" {} Favicon.ico hash: {}".format(action_found, hash_fav))
             for fg in favinger:
                 if hash_fav == fg:
                     techno_found = True
@@ -75,53 +75,61 @@ class finger_print:
                 print(" {} Pulse secure found".format(action_found, hash_fav))
                 return "pulse-secure"
         if not techno_found:
-            print("   {} favicon not found in template database".format(action_not_found))
-            username_input = False
-            password_input = False
-            print(" {} Search input".format(INFO))
-            #TODO search input with a percentage
-            soup = BeautifulSoup(req.text, "html.parser")
-            #print(soup) #debug
-            for p in soup.find_all('input'):
-                with open("fingerprint/inputs.txt", "r") as default_input:
-                    for di in default_input.read().splitlines():
-                        try:
-                            pid = p["id"]
-                            type_ = p["type"]
-                        except:
-                            type_ = p["type"]
-                            pid = False
-                        try:
-                            if di.split(":")[0] == p["name"] and username_input != di.split(":")[0]:
-                                if pid and di.split(":")[0] == p["id"] and type_ != "submit":
-                                    print(" {} input username found: {}".format(action_found, p["name"]))
-                                    username_input = p["name"]
-                                elif pid and di.split(":")[0] != p["id"] and type_ != "submit":
-                                    print(" {} input username found: {}".format(action_found, p["name"]))
-                                    username_input = p["name"]
-                                else:
-                                    if type_ != "submit":
+            print(" {} favicon not found in template database".format(action_not_found))
+            if "tomcat" in req.text and http_auth:
+                print(" {} Tomcat found".format(action_found, hash_fav))
+                return "tomcat"
+            else:
+                return "n"
+            if not http_auth:
+                username_input = False
+                password_input = False
+                print(" {} Search input".format(INFO))
+                #TODO search input with a percentage
+                soup = BeautifulSoup(req.text, "html.parser")
+                #print(soup) #debug
+                for p in soup.find_all('input'):
+                    with open("fingerprint/inputs.txt", "r") as default_input:
+                        for di in default_input.read().splitlines():
+                            try:
+                                pid = p["id"] if p == "id" else p["name"]
+                                type_ = p["type"] if p == "type" else None
+                            except:
+                                type_ = p["type"]
+                                pid = False
+                            try:
+                                if di.split(":")[0] == p["name"] and username_input != di.split(":")[0]:
+                                    if pid and di.split(":")[0] == pid and type_ != "submit":
                                         print(" {} input username found: {}".format(action_found, p["name"]))
                                         username_input = p["name"]
-                        except:
-                            pass
-                        try:
-                            if di.split(":")[1] == p["name"] and password_input != di.split(":")[1]:
-                                if pid and di.split(":")[1] == p["id"]:
-                                    print(" {} input password found: {}".format(action_found, p["name"]))
-                                    password_input = p["name"]
-                                elif pid and di.split(":")[1] != p["id"]:
-                                    print(" {} input password found: {}".format(action_found, p["name"]))
-                                    password_input = p["name"]
-                                else:
-                                    print(" {} input password found: {}".format(action_found, p["name"]))
-                                    password_input = p["name"]
-                        except:
-                            pass
-                            #traceback.print_exc() 
-            if username_input and password_input:
-                return username_input, password_input
-            else:
-                print(" {} Inputs not found".format(action_not_found))
-                return "n"
+                                    elif pid and di.split(":")[0] != pid and type_ != "submit":
+                                        print(" {} input username found: {}".format(action_found, p["name"]))
+                                        username_input = p["name"]
+                                    else:
+                                        if type_ != "submit":
+                                            print(" {} input username found: {}".format(action_found, p["name"]))
+                                            username_input = p["name"]
+                            except:
+                                pass
+                            try:
+                                if di.split(":")[1] == p["name"] and password_input != di.split(":")[1]:
+                                    if pid and di.split(":")[1] == pid:
+                                        print(" {} input password found: {}".format(action_found, p["name"]))
+                                        password_input = p["name"]
+                                    elif pid and di.split(":")[1] != pid:
+                                        print(" {} input password found: {}".format(action_found, p["name"]))
+                                        password_input = p["name"]
+                                    else:
+                                        print(" {} input password found: {}".format(action_found, p["name"]))
+                                        password_input = p["name"]
+                            except:
+                                pass
+                                #traceback.print_exc() 
+                if username_input and password_input:
+                    return username_input, password_input
+                elif onlypass and password_input:
+                    return password_input
+                else:
+                    print(" {} Inputs not found".format(action_not_found))
+                    return "n"
 

@@ -14,9 +14,10 @@ def other_input(url):
 	"webmin":"user:password",
 	"pfsense": "usernamefld:passwordfld",
 	"sonicwall": "admin:password",
-	"pulse-secure":"username:password:realm"
+	"pulse-secure":"username:password:realm",
+	"shopify": "",
 	}
-	if other_value[other]:
+	if other_value[other] != "":
 		return other_value[other]
 	else:
 		return False

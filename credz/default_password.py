@@ -19,6 +19,7 @@ default_passwords = {
     #TOMCAT
     "tomcat": [
     "tomcat:tomcat",
+    "tomcat: ",
     "admin:admin",
     "ovwebusr:OvW*busr1",
     "j2deployer:j2deployer",
