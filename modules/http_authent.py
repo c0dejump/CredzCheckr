@@ -31,7 +31,6 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
             if req.status_code not in [401, 403]:
                 account_found = True
                 print(" {} Account found: {}:{}".format(action_found, u, u))
-                sys.exit()
         for user in usernames:
             with open(wordlist, "r+") as top_pass:
                 for tp in top_pass.read().splitlines():

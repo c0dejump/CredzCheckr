@@ -74,13 +74,11 @@ class finger_print:
             if "dana-na" in req.url:
                 print(" {} Pulse secure found".format(action_found, hash_fav))
                 return "pulse-secure"
-        if not techno_found:
-            print(" {} favicon not found in template database".format(action_not_found))
             if "tomcat" in req.text and http_auth:
                 print(" {} Tomcat found".format(action_found, hash_fav))
                 return "tomcat"
-            else:
-                return "n"
+        if not techno_found:
+            print(" {} favicon not found in template database".format(action_not_found))
             if not http_auth:
                 username_input = False
                 password_input = False
@@ -132,4 +130,6 @@ class finger_print:
                 else:
                     print(" {} Inputs not found".format(action_not_found))
                     return "n"
+            else:
+                return "n"
 

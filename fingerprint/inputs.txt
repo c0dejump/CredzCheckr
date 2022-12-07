@@ -49,3 +49,7 @@ Username:Password
 loginid:pw
 txtUser:txtPass
 txtUid:txtPass
+:pass
+:pass
+_username:_password
+login:password
