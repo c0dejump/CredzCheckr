@@ -43,7 +43,7 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 	python3 credzcheckr.py -u URL/login.php -b
 ```
 
-![alt tag](https://github.com/c0dejump/CredzCheckr/blob/master/static/bf_credz.png)
+![alt tag](https://github.com/c0dejump/CredzCheckr/blob/main/static/bf_credz.png)
 
 
 # TODO
