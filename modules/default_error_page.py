@@ -36,7 +36,7 @@ def first_check(url, username_input, password_input, other_param_value=False):
         elif req.status_code in [301, 302]:
             print("30x redirect")
             req_follow = requests.post(url, data=login, verify=False, allow_redirects=True, timeout=10, headers=UserAgent)
-            req_follow_url = requests.get(req_follow.url, verify=False, timeout=10)
+            req_follow_url = requests.get(req_follow.url, verify=False, timeout=10, headers=UserAgent)
             return len(req.text), len(req_follow_url.text)
         elif req.status_code == 403:
             print("\033[31m! {} Verify if no need csrf token or other same...\033[0m".format(req.status_code))

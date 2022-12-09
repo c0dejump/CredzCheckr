@@ -38,12 +38,21 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 
 	// With a domain name
 	python3 credzcheckr.py -u facebook.com/login.php -d facebook
+
+	// BF default username/password
+	python3 credzcheckr.py -u URL/login.php -b
 ```
+
+![alt tag](https://github.com/c0dejump/CredzCheckr/blob/master/static/bf_credz.png)
+
 
 # TODO
 
 - [ ] Get nmap file to scan
 - [ ] Captcha bypass
+- [ ] Personal header/cookie/values...
+- [ ] Different credentials forms
+- [ ] Without input directly in requests
 
 # Credits
 

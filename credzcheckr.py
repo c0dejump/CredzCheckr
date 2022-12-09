@@ -28,7 +28,7 @@ class all_default_tests:
         account_found = False
         for p in payl:
             login = {username_input: p, password_input: p}
-            req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
+            req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
             
             if type(fc) != int:
                 if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
@@ -38,7 +38,7 @@ class all_default_tests:
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
                     print("  {}Potentially account or username found: {}:{}".format(found, p, p))
                     account_found = True
-                elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
+                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
                     print("  {}Account found: {}:{}".format(found, p, p))
                     if not urls_file:
                         sys.exit()
@@ -55,8 +55,8 @@ class all_default_tests:
         login = {username_input: username, password_input: password}
         req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
         if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-            print("  {}Potentially account or username found: {}".format(found, login))
-        elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
+            print("  {}Potentially account or username found: {} [{}b]".format(found, login, fc))
+        elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
             print("  {}Account found: {}".format(found, login))
             if not urls_file:
                 sys.exit()
@@ -89,7 +89,7 @@ class all_default_tests:
                     req = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
                     print("  {} Potentially account or username found: {}:{}".format(found, user, passwd))
-                elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
+                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
                     print("  {} Account found: {}:{}".format(found, user, passw))
                     sys.exit()
                 elif req.status_code in [301, 302]:
@@ -119,14 +119,19 @@ def bf_top_password(url, username_input, password_input, fc, username=False):
                 for tp in top_pass.read().splitlines():
                     login = {username_input: user, password_input: tp}
                     req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-                    if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                        print("  {}Potentially account or username found: {}".format(found, login))
-                    elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
-                        print("  {}Account found: {}".format(found, login))
-                        #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
-                        if not urls_file:
-                            sys.exit()
-                        return True
+
+                    if type(fc) != int:
+                        if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
+                            print("  {}Potentially account or username found: {} [{}]".format(found, login, len(req.content)))
+                    else:
+                        if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
+                            print("  {}Potentially account or username found: {} [{}b]".format(found, login, len(req.content)))
+                        elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
+                            print("  {}Account found: {}".format(found, login))
+                            #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
+                            if not urls_file:
+                                sys.exit()
+                            return True
                     sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, tp))
                     sys.stdout.write("\033[K")
     else:
@@ -137,7 +142,7 @@ def bf_top_password(url, username_input, password_input, fc, username=False):
                 req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
                     print("  {}Potentially password: {}".format(found, login))
-                elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
+                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
                     print("  {}Password found: {}".format(found, login))
                     #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
                     if not urls_file:
@@ -281,7 +286,9 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--domain', help="Add domain to test all combinaison like domain@2019, domain2021...", required=False, dest='domain', action="store")
     parser.add_argument('-uap', '--user-as-pass',  help='test user-as-pass', dest='uap', action='store_true')
     parser.add_argument("--user", help="If you want test just a known username", required=False, dest='user_known', action="store")
+    parser.add_argument('--cookie', '--cookie', help="To add cookie", required=False, dest='cookie_', action="store_true")
     parser.add_argument('--onlypass', '--onlypass', help="If there is just only password to test", required=False, dest='onlypass', action="store_true")
+
 
     results = parser.parse_args()
                                      
@@ -295,6 +302,7 @@ if __name__ == '__main__':
     key_words = results.key_words
     domain = results.domain
     onlypass = results.onlypass
+    cookie_ = results.cookie_
 
 
     if user_known:

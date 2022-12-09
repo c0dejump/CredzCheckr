@@ -51,7 +51,7 @@ class finger_print:
 
 
     def other_check(self, url, onlypass=False, http_auth=False):
-        print(" {} Search technologie".format(INFO))
+        print(" {} Technology search".format(INFO))
 
         techno_found = False
         hash_fav = 0
@@ -93,32 +93,31 @@ class finger_print:
                                 pid = p["id"] if p == "id" else p["name"]
                                 type_ = p["type"] if p == "type" else None
                             except:
-                                type_ = p["type"]
-                                pid = False
+                                pass
                             try:
                                 if di.split(":")[0] == p["name"] and username_input != di.split(":")[0]:
                                     if pid and di.split(":")[0] == pid and type_ != "submit":
-                                        print(" {} input username found: {}".format(action_found, p["name"]))
+                                        print(" {} Username input found: {}".format(action_found, p["name"]))
                                         username_input = p["name"]
                                     elif pid and di.split(":")[0] != pid and type_ != "submit":
-                                        print(" {} input username found: {}".format(action_found, p["name"]))
+                                        print(" {} Username input found: {}".format(action_found, p["name"]))
                                         username_input = p["name"]
                                     else:
                                         if type_ != "submit":
-                                            print(" {} input username found: {}".format(action_found, p["name"]))
+                                            print(" {} Username input found: {}".format(action_found, p["name"]))
                                             username_input = p["name"]
                             except:
                                 pass
                             try:
                                 if di.split(":")[1] == p["name"] and password_input != di.split(":")[1]:
                                     if pid and di.split(":")[1] == pid:
-                                        print(" {} input password found: {}".format(action_found, p["name"]))
+                                        print(" {} Password input found: {}".format(action_found, p["name"]))
                                         password_input = p["name"]
                                     elif pid and di.split(":")[1] != pid:
-                                        print(" {} input password found: {}".format(action_found, p["name"]))
+                                        print(" {} Password input found: {}".format(action_found, p["name"]))
                                         password_input = p["name"]
                                     else:
-                                        print(" {} input password found: {}".format(action_found, p["name"]))
+                                        print(" {} Password input found: {}".format(action_found, p["name"]))
                                         password_input = p["name"]
                             except:
                                 pass

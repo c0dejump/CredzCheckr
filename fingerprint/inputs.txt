@@ -1,4 +1,5 @@
 username:password
+userName:password
 usr:pwd
 user:pass
 user:passwd
@@ -50,6 +51,7 @@ loginid:pw
 txtUser:txtPass
 txtUid:txtPass
 :pass
-:pass
 _username:_password
 login:password
+ContentPlaceHolder1_txtuser:ContentPlaceHolder1_txtpasswd
+ctl00$ContentPlaceHolder1$txtuser:ctl00$ContentPlaceHolder1$txtpasswd
