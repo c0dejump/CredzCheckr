@@ -47,5 +47,9 @@ default_passwords = {
     #SONICWALL
     "sonicwall": [
     "admin:password"
+    ],
+    #Umbraco
+    "umbraco": [
+    "admin:test"
     ]
 }

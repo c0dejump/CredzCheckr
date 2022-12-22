@@ -25,7 +25,7 @@ def first_check(url, username_input, password_input, other_param_value=False):
             sys.exit()
         else:
             print(req.status_code)
-            sys.exit()
+            return page_len
     else:
         login ={username_input: "azefraezfr", password_input: "azefraezfr"}
         req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)

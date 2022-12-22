@@ -16,7 +16,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
     if other_name == "n":
         account_found = False
 
-        usernames = ["admin", "administrateur", "test", "root", "guest", "anonymous", "tomcat", "manager"] if not user_known else [user_known]
+        usernames = ["admin", "administrateur", "test", "root", "guest", "anonymous", "tomcat", "manager", "demo"] if not user_known else [user_known]
 
         if user_known:
             default_passwords_user = ["{}2019","{}2020","{}2021","{}2022","{}2023","{}@123","{}@123!"]
@@ -62,6 +62,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                     passwd = d.split(":")[1]
                     try:
                         req = requests.post(url, auth=(user, passwd), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
+                        print(req)
                         if req.status_code not in [401, 403]:
                             print("  {}Account found: {}:{}".format(found, user, passwd))
                             sys.exit()

@@ -23,7 +23,7 @@ UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJ
 class all_default_tests:
 
     def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, basic=False):
-        payl = ["admin", "administrateur", "test", "root", "guest", "anonymous", "a'or 1=1#", "a'or 1=1 or'"]
+        payl = ["admin", "administrateur", "test", "root", "guest", "anonymous", "demo", "manager", "a'or 1=1#", "a'or 1=1 or'"]
 
         account_found = False
         for p in payl:
@@ -43,7 +43,8 @@ class all_default_tests:
                     if not urls_file:
                         sys.exit()
             
-            sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(p, p))
+            #sys.stdout.write("\033[34{}: {} | {}: {}\033[0m\r".format(username_input, p, password_input, p))
+            sys.stdout.write("\033[34{}\033[0m\r".format(login))
             sys.stdout.write("\033[K")
         return account_found
 
@@ -61,7 +62,8 @@ class all_default_tests:
             if not urls_file:
                 sys.exit()
             return True
-        sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(username, password))
+        #sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, username, password_input, password))
+        sys.stdout.write("\033[34{}\033[0m\r".format(login))
         sys.stdout.write("\033[K")
 
 
@@ -69,9 +71,14 @@ class all_default_tests:
         print(" {} Default domain test".format(INFO))
 
         #username_input, password_input, other_param, other_param_value = check_param(inputs)
-        fc = first_check(url, username_input, password_input, other_param_value) if len(inputs.split(":")) > 2 else first_check(url, username_input, password_input)
+        if app_type != "basic_auth":
+            fc = first_check(url, username_input, password_input, other_param_value) if len(inputs.split(":")) > 2 else first_check(url, username_input, password_input)
+        else:
+            fc_r = requests.post(url, auth=("dzecefzrve", "dzecefzrve"), verify=False, allow_redirects=False, timeout=10)
+            fc = len(fc_r.content)
 
-        users = ["admin", "administrateur", "test", "root", "guest"] if not user_known else [user_default]
+
+        users = ["admin", "administrateur", "test", "root", "guest", domain] if not user_known else [user_default]
 
         dico_user_reuse = [
         "{}".format(domain), "{}@".format(domain),
@@ -97,8 +104,12 @@ class all_default_tests:
                     print(req2.headers.get("Location"))
                     if req2.headers.get("Location") != req.headers.get("Location"):
                         print("  {}Account found: {}:{}".format(found, user, passwd))
-                sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, passwd))
-                sys.stdout.write("\033[K")
+                if app_type != "basic_auth":
+                    sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, user, password_input, passwd))
+                    sys.stdout.write("\033[K")
+                else:
+                    sys.stdout.write("\033[34m{} | {}\033[0m\r".format(user, passwd))
+                    sys.stdout.write("\033[K")
 
 
 
@@ -109,7 +120,7 @@ def bf_top_password(url, username_input, password_input, fc, username=False):
         if username:
             usernames.append(username)
         elif user_known:
-            usernames = user_default
+            usernames = [user_default]
         else:
             with open("credz/wordlists/top_default_username.txt", "r") as users:
                 usernames += users
@@ -132,7 +143,7 @@ def bf_top_password(url, username_input, password_input, fc, username=False):
                             if not urls_file:
                                 sys.exit()
                             return True
-                    sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, tp))
+                    sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, user, password_input, tp))
                     sys.stdout.write("\033[K")
     else:
         print(" {} Bruteforce password".format(INFO))
@@ -140,9 +151,9 @@ def bf_top_password(url, username_input, password_input, fc, username=False):
             for tp in top_pass.read().splitlines():
                 login = {password_input: tp}
                 req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-                if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
+                if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403, 429]:
                     print("  {}Potentially password: {}".format(found, login))
-                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
+                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403, 429]:
                     print("  {}Password found: {}".format(found, login))
                     #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
                     if not urls_file:
@@ -239,9 +250,12 @@ def main(url, domain=False, cms_value=True):
                 print(" {}{}".format(action_found, cms_name))
                 credz_input = cms_input(cms_name)
                 if credz_input:
-                    test_credz(url, credz_input, adt, cms_name)
-                    if domain:
-                        adt.default_domain_test(url, domain, app_type, inputs=credz_input)
+                    req_inputs = requests.get(url, verify=False, timeout=10, headers=UserAgent)
+                    if credz_input[0] in req_inputs.text and credz_input[1] in req_inputs.text:
+                        print("      {}Inputs {} found in page".format(INFO, credz_input))
+                        test_credz(url, credz_input, adt, cms_name)
+                        if domain:
+                            adt.default_domain_test(url, domain, app_type, inputs=credz_input)
                 else:
                     print(" {} CMS template not found".format(action_not_found))
                     main(url, domain=domain, cms_value=False)

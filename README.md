@@ -1,6 +1,8 @@
 # CredzCheckr
 Testing default web credentials
 
+### v.1
+
 # Usage
 
 ```
@@ -53,6 +55,7 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 - [ ] Personal header/cookie/values...
 - [ ] Different credentials forms
 - [ ] Without input directly in requests
+- [ ] Selenium when javascript do enable
 
 # Credits
 

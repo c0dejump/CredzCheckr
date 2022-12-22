@@ -96,14 +96,14 @@ class finger_print:
                                 pass
                             try:
                                 if di.split(":")[0] == p["name"] and username_input != di.split(":")[0]:
-                                    if pid and di.split(":")[0] == pid and type_ != "submit":
+                                    if pid and di.split(":")[0] == pid and type_ != "submit" and pid != "email":
                                         print(" {} Username input found: {}".format(action_found, p["name"]))
                                         username_input = p["name"]
-                                    elif pid and di.split(":")[0] != pid and type_ != "submit":
+                                    elif pid and di.split(":")[0] != pid and type_ != "submit" and pid != "email":
                                         print(" {} Username input found: {}".format(action_found, p["name"]))
                                         username_input = p["name"]
                                     else:
-                                        if type_ != "submit":
+                                        if type_ != "submit" and pid != "email":
                                             print(" {} Username input found: {}".format(action_found, p["name"]))
                                             username_input = p["name"]
                             except:
