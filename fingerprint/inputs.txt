@@ -56,9 +56,6 @@ login:password
 ContentPlaceHolder1_txtuser:ContentPlaceHolder1_txtpasswd
 ctl00$ContentPlaceHolder1$txtuser:ctl00$ContentPlaceHolder1$txtpasswd
 login:mdp
-login:mdp
-login:mdp
 Username:Code
-at_username_field1:at_password_field1
 at_username_field1:at_password_field1
 :adminpw
