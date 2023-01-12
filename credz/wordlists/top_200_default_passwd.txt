@@ -67,6 +67,8 @@ Admin2020!
 Admin2021!
 Admin2022!
 Admin123
+Admin@1
+Admin@1!
 admin@1234!
 Admin@1234!
 admin@2016!
@@ -141,12 +143,14 @@ admin
 tomcat
 changethis
 changeme
+changeme1
 manager
 root
 r00t
 toor
 s3cret
 role1
+user
 superuser
 test
 test123
@@ -174,6 +178,8 @@ pass123
 pass@123
 pass@123!
 pass123!
+passwd1
+passwd
 t00r
 demo
 motdepasse
@@ -228,3 +234,4 @@ D1lakiss
 Nothing
 Secret
 zxcvbnm
+info

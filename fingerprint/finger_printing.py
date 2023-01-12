@@ -11,7 +11,7 @@ import codecs
 import time
 
 from .favicon_fingerprint import favinger
-from color_config import INFO, found, not_found, action_not_found, action_found
+from config.color_config import INFO, found, not_found, action_not_found, action_found
 
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 

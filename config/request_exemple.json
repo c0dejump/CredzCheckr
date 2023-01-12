@@ -1,0 +1,17 @@
+{
+	"infos": {
+			"url": "https://oceane-examens-v8-pp.dsac.aviation-civile.gouv.fr/auth/login",
+			"method": "POST",
+			"type": "json" 
+		},
+	"credz_inputs": {
+		"username_input": "username",
+		"password_input": "password"
+	},
+	"other_values": {
+	},
+	"header": {
+		"User-agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko",
+		"Content-Type": "application/json"
+	}
+}

@@ -59,3 +59,4 @@ login:mdp
 Username:Code
 at_username_field1:at_password_field1
 :adminpw
+lLogin$UserName:lLogin$Password

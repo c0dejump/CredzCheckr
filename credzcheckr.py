@@ -8,172 +8,24 @@ import sys, os, re
 import time
 
 from fingerprint.finger_printing import finger_print
+
 from templates.cms_templates import cms_input
 from templates.other_templates import other_input
+
 from credz.default_password import default_passwords
-from color_config import INFO, found, not_found, action_not_found, action_found
+
 from modules.http_authent import http_auth
 from modules.default_error_page import first_check
+from modules.default_tests import all_default_tests
+from modules.bf_top_pass import bf_top_password
+from modules.predefined_request import predefined_request_send
+
+from config.color_config import INFO, found, not_found, action_not_found, action_found
+
 
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
 UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko'}
-
-
-class all_default_tests:
-
-    def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, basic=False):
-        payl = ["admin", "administrateur", "test", "root", "guest", "anonymous", "demo", "manager", "a'or 1=1#", "a'or 1=1 or'"]
-
-        account_found = False
-        for p in payl:
-            login = {username_input: p, password_input: p}
-            req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-            
-            if type(fc) != int:
-                if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
-                    print("  {}Potentially account or username found: {}:{}".format(found, p, p))
-                    account_found = True
-            else:
-                if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                    print("  {}Potentially account or username found: {}:{}".format(found, p, p))
-                    account_found = True
-                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
-                    print("  {}Account found: {}:{}".format(found, p, p))
-                    if not urls_file:
-                        sys.exit()
-            
-            #sys.stdout.write("\033[34{}: {} | {}: {}\033[0m\r".format(username_input, p, password_input, p))
-            sys.stdout.write("\033[34{}\033[0m\r".format(login))
-            sys.stdout.write("\033[K")
-        return account_found
-
-
-    def test_default_password(self, url, username_input, password_input, username, password, fc):
-        """
-        test_default_password: Test known default password
-        """
-        login = {username_input: username, password_input: password}
-        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-        if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-            print("  {}Potentially account or username found: {} [{}b]".format(found, login, fc))
-        elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
-            print("  {}Account found: {}".format(found, login))
-            if not urls_file:
-                sys.exit()
-            return True
-        #sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, username, password_input, password))
-        sys.stdout.write("\033[34{}\033[0m\r".format(login))
-        sys.stdout.write("\033[K")
-
-
-    def default_domain_test(self, url, domain, app_type, inputs=False):
-        print(" {} Default domain test".format(INFO))
-
-        #username_input, password_input, other_param, other_param_value = check_param(inputs)
-        if app_type != "basic_auth":
-            fc = first_check(url, username_input, password_input, other_param_value) if len(inputs.split(":")) > 2 else first_check(url, username_input, password_input)
-        else:
-            fc_r = requests.post(url, auth=("dzecefzrve", "dzecefzrve"), verify=False, allow_redirects=False, timeout=10)
-            fc = len(fc_r.content)
-
-
-        users = ["admin", "administrateur", "test", "root", "guest", domain] if not user_known else [user_default]
-
-        dico_user_reuse = [
-        "{}".format(domain), "{}@".format(domain),
-        "{}2016".format(domain),"{}2017".format(domain),"{}2018".format(domain),"{}2019".format(domain),"{}2020".format(domain), "{}2021".format(domain), 
-        "{}2016*".format(domain),"{}2017*".format(domain),"{}2018*".format(domain),"{}2019*".format(domain),"{}2020*".format(domain),"{}2021*".format(domain), 
-        "{}@2016".format(domain),"{}@2017".format(domain),"{}@2018".format(domain),"{}@2019".format(domain),"{}@2020".format(domain),"{}@2021".format(domain),
-        "{}2016!".format(domain),"{}2017!".format(domain),"{}2018!".format(domain),"{}2019!".format(domain),"{}2020!".format(domain),"{}2021!".format(domain),
-        "{}123".format(domain), "{}123!".format(domain), "{}@123!".format(domain), "{}@123*".format(domain)]
-        for user in users:
-            for passwd in dico_user_reuse:
-                if app_type != "web":
-                    req = requests.post(url, auth=(user, passwd), verify=False, allow_redirects=False, timeout=10)
-                else:
-                    datas = {username_input: user, password_input: passwd, other_param: other_param_value} if len(inputs.split(":")) > 2 else {username_input: user, password_input: passwd}
-                    req = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-                if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                    print("  {} Potentially account or username found: {}:{}".format(found, user, passwd))
-                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
-                    print("  {} Account found: {}:{}".format(found, user, passw))
-                    sys.exit()
-                elif req.status_code in [301, 302]:
-                    req2 = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-                    print(req2.headers.get("Location"))
-                    if req2.headers.get("Location") != req.headers.get("Location"):
-                        print("  {}Account found: {}:{}".format(found, user, passwd))
-                if app_type != "basic_auth":
-                    sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, user, password_input, passwd))
-                    sys.stdout.write("\033[K")
-                else:
-                    sys.stdout.write("\033[34m{} | {}\033[0m\r".format(user, passwd))
-                    sys.stdout.write("\033[K")
-
-
-
-def bf_top_password(url, username_input, password_input, fc, username=False):
-    if not onlypass:
-        print(" {} Bruteforce username:password".format(INFO))
-        usernames = []
-        if username:
-            usernames.append(username)
-        elif user_known:
-            usernames = [user_default]
-        else:
-            with open("credz/wordlists/top_default_username.txt", "r") as users:
-                usernames += users
-        for user in usernames:
-            user = user.replace("\n","")
-            with open(wordlist, "r+") as top_pass:
-                for tp in top_pass.read().splitlines():
-                    login = {username_input: user, password_input: tp}
-                    req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-
-                    if type(fc) != int:
-                        if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
-                            print("  {}Potentially account or username found: {} [{}]".format(found, login, len(req.content)))
-                    else:
-                        if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                            print("  {}Potentially account or username found: {} [{}b]".format(found, login, len(req.content)))
-                        elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
-                            print("  {}Account found: {}".format(found, login))
-                            #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
-                            if not urls_file:
-                                sys.exit()
-                            return True
-                    sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, user, password_input, tp))
-                    sys.stdout.write("\033[K")
-    else:
-        print(" {} Bruteforce password".format(INFO))
-        with open(wordlist, "r+") as top_pass:
-            for tp in top_pass.read().splitlines():
-                login = {password_input: tp}
-                req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-                if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403, 429]:
-                    print("  {}Potentially password: {}".format(found, login))
-                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403, 429]:
-                    print("  {}Password found: {}".format(found, login))
-                    #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
-                    if not urls_file:
-                        sys.exit()
-                    return True
-                elif "Too many" in req.text or req.status_code == 429:
-                    from threading import Timer
-
-                    timeout = 10
-                    t = Timer(timeout, print, ['Sorry, times up'])
-                    t.start()
-                    prompt = "Too many failed attempts, please defined how much time you will wait (wait 10scd for default 60s): "
-                    answer = input(prompt)
-                    t.cancel()
-                    if answer:
-                        time.sleep(answer)
-                    else:
-                        time.sleep(60)
-                sys.stdout.write("\033[34 password: {}\033[0m\r".format(tp))
-                sys.stdout.write("\033[K")
 
 
 def check_param(inputs, url):
@@ -182,7 +34,7 @@ def check_param(inputs, url):
     global password_input
     password_input = inputs.split(":")[1]
 
-    req = requests.get(url, verify=False, timeout=10, headers=UserAgent)
+    req = requests.get(url, verify=False, timeout=10, headers=UserAgent, cookies=cookie_)
 
     if username_input in req.text and password_input in req.text:
         if len(inputs.split(":")) > 2:
@@ -210,25 +62,24 @@ def test_credz(url, credz_input, adt, type_techno=False):
                     username = d.split(":")[0]
                     password = d.split(":")[1]
                     print(" {} Default credentials: {}:{}".format(INFO, username, password))
-                    tdp = adt.test_default_password(url, username_input, password_input, username, password, fc)
+                    tdp = adt.test_default_password(url, username_input, password_input, username, password, fc, cookie_)
                 if not tdp and bf:
                     for d in default_passwords[dp]:
                         username = d.split(":")[0]
-                        btp = bf_top_password(url, username_input, password_input, fc, username)
+                        btp = bf_top_password(url, wordlist, username_input, password_input, fc, cookie_, user_known, onlypass, username)
     if not tdp:
         print("-"*30)
         print(" {} Test user-as-pass".format(INFO))
-        user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc)
+        user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, cookie_)
         if not user_as_pass:
             print(" {} user-as-pass account not found".format(action_not_found))
         if bf:
-            btp = bf_top_password(url, username_input, password_input, fc)
+            btp = bf_top_password(url, wordlist, username_input, password_input, fc, cookie_, user_known, onlypass)
             if not btp:
                 print(" {} Default Account not found".format(action_not_found))
 
 
-
-def main(url, domain=False, cms_value=True):
+def main(url, cookie_, domain=False, cms_value=True):
     fg = finger_print()
 
     adt = all_default_tests();
@@ -238,7 +89,7 @@ def main(url, domain=False, cms_value=True):
     if app_type != "web":
         # Launch basic http authent
         if domain:
-            adt.default_domain_test(url, domain, app_type)
+            adt.default_domain_test(url, domain, app_type, cookie_)
         other_name = fg.other_check(url, http_auth=True)
         http_auth(url, user_known, wordlist, bf, other_name) if other_name else http_auth(url, user_known, wordlist, bf)
     else:
@@ -250,12 +101,12 @@ def main(url, domain=False, cms_value=True):
                 print(" {}{}".format(action_found, cms_name))
                 credz_input = cms_input(cms_name)
                 if credz_input:
-                    req_inputs = requests.get(url, verify=False, timeout=10, headers=UserAgent)
+                    req_inputs = requests.get(url, verify=False, timeout=10, headers=UserAgent, cookies=cookie_)
                     if credz_input[0] in req_inputs.text and credz_input[1] in req_inputs.text:
                         print("      {}Inputs {} found in page".format(INFO, credz_input))
                         test_credz(url, credz_input, adt, cms_name)
                         if domain:
-                            adt.default_domain_test(url, domain, app_type, inputs=credz_input)
+                            adt.default_domain_test(url, domain, app_type, cookie_, inputs=credz_input)
                 else:
                     print(" {} CMS template not found".format(action_not_found))
                     main(url, domain=domain, cms_value=False)
@@ -265,26 +116,28 @@ def main(url, domain=False, cms_value=True):
                 if len(other_name) > 2:
                     if onlypass:
                         fc = first_check(url, None, other_name)
-                        bf_top_password(url, None, other_name, fc)
+                        bf_top_password(url, wordlist, None, other_name, fc, cookie_, user_known, onlypass)
                     else:   
                         #if there are more 2 parameter to send
                         credz_input = other_input(other_name)
                         test_credz(url, credz_input, adt, other_name)
                         if domain:
-                            adt.default_domain_test(url, domain, app_type, inputs=credz_input)
+                            adt.default_domain_test(url, domain, app_type, cookie_, inputs=credz_input)
                 elif len(other_name) == 2:
                     credz_input = "{}:{}".format(other_name[0], other_name[1])
                     test_credz(url, credz_input, adt)
                     if domain:
-                        adt.default_domain_test(url, domain, app_type, inputs=credz_input)
+                        adt.default_domain_test(url, domain, app_type, cookie_, inputs=credz_input)
                 else:
                     print(" {} Nothing template found".format(action_not_found))
         except KeyboardInterrupt:
-            if not file_url:
+            print(" {}Canceled by keyboard interrupt (Ctrl-C) ".format(INFO))
+            sys.exit()
+            """if not file_url:
                 print(" {}Canceled by keyboard interrupt (Ctrl-C) ".format(INFO))
                 sys.exit()
             else:
-                print(" {}Canceled by keyboard interrupt (Ctrl-C), next site ".format(INFO))
+                print(" {}Canceled by keyboard interrupt (Ctrl-C), next site ".format(INFO))"""
     print("-"*30)
 
 
@@ -300,8 +153,9 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--domain', help="Add domain to test all combinaison like domain@2019, domain2021...", required=False, dest='domain', action="store")
     parser.add_argument('-uap', '--user-as-pass',  help='test user-as-pass', dest='uap', action='store_true')
     parser.add_argument("--user", help="If you want test just a known username", required=False, dest='user_known', action="store")
-    parser.add_argument('--cookie', '--cookie', help="To add cookie", required=False, dest='cookie_', action="store_true")
+    parser.add_argument('--cookie', help="To add cookie", required=False, dest='cookie_')
     parser.add_argument('--onlypass', '--onlypass', help="If there is just only password to test", required=False, dest='onlypass', action="store_true")
+    parser.add_argument('--request', help="Json file containing the indications to carry out for a request", dest='req_file')
 
 
     results = parser.parse_args()
@@ -317,6 +171,14 @@ if __name__ == '__main__':
     domain = results.domain
     onlypass = results.onlypass
     cookie_ = results.cookie_
+    req_file = results.req_file
+
+    if cookie_:
+        cookie_ = {cookie_.split(":")[0]: cookie_.split(":")[1]}
+
+    if req_file:
+        predefined_request_send(req_file, bf, wordlist)
+        sys.exit()
 
 
     if user_known:
@@ -331,15 +193,14 @@ if __name__ == '__main__':
             add_input.write(inputs+"\n")
     if key_words:
         for k in key_words:
-            with open("credz/wordlits/my_passwords.txt", "a+") as add_pass:
+            with open(wordlist, "a+") as add_pass:
                 add_pass.write(k+"\n")
-        wordlist = "credz/my_passwords.txt"
     if not urls_file:
         print("\033[35m URL: {}\033[0m".format(url))
         #url = url + "/" if url.split("/")[-1] != "" else url
-        main(url, domain if domain else False)
+        main(url, cookie_, domain if domain else False)
     else:
         with open(urls_file, "r+") as uf:
             for u in uf.readlines():
                 print(" [i] URL: {}".format(u))
-                main(u.strip(), domain if domain else False)
+                main(u.strip(), cookie_, domain if domain else False)

@@ -1,7 +1,8 @@
 # CredzCheckr
 Testing default web credentials
 
-### v.1
+### v.1.2
+
 
 # Usage
 
@@ -24,8 +25,10 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 	                        Add domain to test all combinaison like domain@2019, domain2021...
 	  -uap, --user-as-pass  test user-as-pass
 	  --user USER_KNOWN     If you want test just a known username
+	  --cookie COOKIE_, 	To add cookie
 	  --onlypass ONLYPASS, --onlypass ONLYPASS
 	                        If there is just only password to test
+      --request REQ_FILE    Json file containing the indications to carry out for a request
 
 ```
 
@@ -43,6 +46,9 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 
 	// BF default username/password
 	python3 credzcheckr.py -u URL/login.php -b
+
+	// With specific format requests file
+	python3 credzcheckr.py --request config/request_exemple.json
 ```
 
 ![alt tag](https://github.com/c0dejump/CredzCheckr/blob/main/static/bf_credz.png)
@@ -50,12 +56,11 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 
 # TODO
 
+- [IP] Different credentials forms
 - [ ] Get nmap file to scan
 - [ ] Captcha bypass
-- [ ] Personal header/cookie/values...
-- [ ] Different credentials forms
-- [ ] Without input directly in requests
 - [ ] Selenium when javascript do enable
+- [ ] Bruteforce with user@domain.(fr/en...)
 
 # Credits
 

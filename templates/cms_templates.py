@@ -18,7 +18,8 @@ def cms_input(cms):
 	"joomla": "username:password",
 	"shopify":"",
 	"webflow cms": "",
-	"umbraco": "Username:Password"
+	"umbraco": "Username:Password",
+	"typo3 cms": ""
 	}
 	if cms_value[cms] != "":
 		return cms_value[cms]

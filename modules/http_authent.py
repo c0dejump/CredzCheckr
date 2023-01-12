@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from color_config import INFO, found, not_found, action_not_found, action_found
+from config.color_config import INFO, found, not_found, action_not_found, action_found
 from credz.default_password import default_passwords
 import requests
 import sys
@@ -19,7 +19,16 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
         usernames = ["admin", "administrateur", "test", "root", "guest", "anonymous", "tomcat", "manager", "demo"] if not user_known else [user_known]
 
         if user_known:
-            default_passwords_user = ["{}2019","{}2020","{}2021","{}2022","{}2023","{}@123","{}@123!"]
+            default_passwords_user = ["{}".format(user_know), "{}@".format(user_know),
+        "{}2016".format(user_know),"{}2017".format(user_know),"{}2018".format(user_know),"{}2019".format(user_know),"{}2020".format(user_know), "{}2021".format(user_know), 
+        "{}2022".format(user_know), "{}2023".format(user_know),
+        "{}2016*".format(user_know),"{}2017*".format(user_know),"{}2018*".format(user_know),"{}2019*".format(user_know),"{}2020*".format(user_know),"{}2021*".format(user_know),
+        "{}2022*".format(user_know), "{}2023*".format(user_know),
+        "{}@2016".format(user_know),"{}@2017".format(user_know),"{}@2018".format(user_know),"{}@2019".format(user_know),"{}@2020".format(user_know),"{}@2021".format(user_know),
+        "{}@2022".format(user_know), "{}@2023".format(user_know),
+        "{}2016!".format(user_know),"{}2017!".format(user_know),"{}2018!".format(user_know),"{}2019!".format(user_know),"{}2020!".format(user_know),"{}2021!".format(user_know),
+        "{}2022!".format(user_know), "{}2023!".format(user_know),
+        "{}123".format(user_know), "{}123!".format(user_know), "{}@123!".format(user_know), "{}@123*".format(user_know)]
             for dpu in default_passwords_user:
                 req = requests.post(url, auth=(user_known, dpu), verify=False, timeout=10, headers=UserAgent)
                 if req.status_code not in [401, 403]:
@@ -28,9 +37,12 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                     sys.exit()
         for u in usernames:
             req = requests.post(url, auth=(u, u), verify=False, timeout=10, headers=UserAgent)
-            if req.status_code not in [401, 403]:
+            if req.status_code not in [401, 403, 400, 500]:
                 account_found = True
                 print(" {} Account found: {}:{}".format(action_found, u, u))
+                sys.exit()
+            elif req.status_code in [400, 500]:
+                print(" {} ! Server error please check if the authentification is stable".format(action_not_found))
                 sys.exit()
         for user in usernames:
             with open(wordlist, "r+") as top_pass:

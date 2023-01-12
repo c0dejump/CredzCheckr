@@ -1,6 +1,11 @@
+adm
 admin
 administrateur
 test
+info
 root
 guest
 anonymous
+demo
+manager
+user
