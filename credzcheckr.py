@@ -181,9 +181,6 @@ if __name__ == '__main__':
         sys.exit()
 
 
-    if user_known:
-        global user_default 
-        user_default = user_known
     if len(sys.argv) < 2:
         print("{}URL target is missing, try using -u <url> or -h for help".format(INFO))
         parser.print_help()

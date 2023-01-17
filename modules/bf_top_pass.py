@@ -12,10 +12,10 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, cookie_=F
     if not onlypass:
         print(" {} Bruteforce username:password".format(INFO))
         usernames = []
-        if username:
+        if user_known:
+            usernames = [user_known]
+        elif username:
             usernames.append(username)
-        elif user_known:
-            usernames = [user_default]
         else:
             with open("credz/wordlists/top_default_username.txt", "r") as users:
                 usernames += users
@@ -24,7 +24,11 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, cookie_=F
             with open(wordlist, "r+") as top_pass:
                 for tp in top_pass.read().splitlines():
                     login = {username_input: user, password_input: tp}
-                    req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                    try:
+                        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                    except:
+                        print(" i Error with {} credentials".format(login))
+                        pass
                     if type(fc) != int:
                         if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
                             print("  {}Potentially account or username found: {} [{}]".format(found, login, len(req.content)))

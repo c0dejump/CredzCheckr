@@ -1,12 +1,12 @@
 {
 	"infos": {
-			"url": "https://oceane-examens-v8-pp.dsac.aviation-civile.gouv.fr/auth/login",
+			"url": "https://www.sesamed.orange.fr/siteminderagent/forms/login.fcc",
 			"method": "POST",
-			"type": "json" 
+			"type": "txt" 
 		},
 	"credz_inputs": {
-		"username_input": "username",
-		"password_input": "password"
+		"username_input": "USER",
+		"password_input": "PASSWORD"
 	},
 	"other_values": {
 	},

@@ -13,7 +13,7 @@ UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJ
 class all_default_tests:
 
     def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, basic=False, cookie_=False):
-        payl = ["admin", "adm" "administrateur", "test", "info", "root", "guest", "anonymous", "demo", "manager", "user", "a'or 1=1#", "a'or 1=1 or'"]
+        payl = ["admin", "adm" "administrateur", "test", "info", "root", "guest", "anonymous", "demo", "manager", "user", "dev", "a'or 1=1#", "a'or 1=1 or'"]
 
         account_found = False
         for p in payl:
