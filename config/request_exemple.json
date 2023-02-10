@@ -1,17 +1,20 @@
 {
 	"infos": {
-			"url": "https://www.sesamed.orange.fr/siteminderagent/forms/login.fcc",
+			"url": "https://partenaires.gmf.fr/authentificationPartenairesJSF.faces",
 			"method": "POST",
 			"type": "txt" 
 		},
 	"credz_inputs": {
-		"username_input": "USER",
-		"password_input": "PASSWORD"
+		"username_input": "form1:inputUid",
+		"password_input": "form1:inputPassword"
 	},
 	"other_values": {
+		"form1": "form1",
+		"form1:button1.x":"25",
+		"form1:button1.y":"8",
+		"javax.faces.ViewState":"5024555544175061982:-4582914017685813952"
 	},
 	"header": {
-		"User-agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko",
-		"Content-Type": "application/json"
+		"User-agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko"
 	}
 }

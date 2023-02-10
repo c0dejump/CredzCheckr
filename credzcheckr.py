@@ -43,7 +43,7 @@ def check_param(inputs, url):
             global other_param_value
             other_param_value = input(" {} Please define the {} parameter [login:pass]: ".format(INFO, inputs.split(":")[2]))
     else:
-        other_input_value = input(" {} CMS basic input dosn't seem ok, please define input [login:pass]: ".format(INFO))
+        other_input_value = input(" {} CMS basic input dosn't seem ok, please define manual input [login:pass]: ".format(INFO))
         username_input = other_input_value.split(":")[0]
         password_input = other_input_value.split(":")[1]
 

@@ -12,6 +12,10 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
     """
     http_auth: test http authentification
     """
+
+    s = requests.session()
+    s.verify=False
+    
     print(" {} HTTP authentification".format(found))
     if other_name == "n":
         account_found = False
@@ -30,13 +34,13 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
         "{}2022!".format(user_know), "{}2023!".format(user_know),
         "{}123".format(user_know), "{}123!".format(user_know), "{}@123!".format(user_know), "{}@123*".format(user_know)]
             for dpu in default_passwords_user:
-                req = requests.post(url, auth=(user_known, dpu), verify=False, timeout=10, headers=UserAgent)
+                req = s.post(url, auth=(user_known, dpu), timeout=10, headers=UserAgent)
                 if req.status_code not in [401, 403]:
                     account_found = True
                     print(" {} Account found: {}:{}".format(action_found, u, u))
                     sys.exit()
         for u in usernames:
-            req = requests.post(url, auth=(u, u), verify=False, timeout=10, headers=UserAgent)
+            req = s.post(url, auth=(u, u), timeout=10, headers=UserAgent)
             if req.status_code not in [401, 403, 400, 500]:
                 account_found = True
                 #print(req) #DEBUG
@@ -48,7 +52,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
         for user in usernames:
             with open(wordlist, "r+") as top_pass:
                 for tp in top_pass.read().splitlines():
-                    req = requests.post(url, auth=(user, tp), verify=False, timeout=10, headers=UserAgent)
+                    req = s.post(url, auth=(user, tp), timeout=10, headers=UserAgent)
                     if req.status_code not in [401, 403]:
                         account_found = True
                         print(" {} Account found: {}:{}".format(action_found, user, tp))
@@ -74,7 +78,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                     user = d.split(":")[0]
                     passwd = d.split(":")[1]
                     try:
-                        req = requests.post(url, auth=(user, passwd), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
+                        req = s.post(url, auth=(user, passwd), allow_redirects=False, timeout=10, headers=UserAgent)
                         print(req)
                         if req.status_code not in [401, 403]:
                             print("  {}Account found: {}:{}".format(found, user, passwd))

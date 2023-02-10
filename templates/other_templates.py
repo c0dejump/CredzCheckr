@@ -16,6 +16,7 @@ def other_input(url):
 	"sonicwall": "admin:password",
 	"pulse-secure":"username:password:realm",
 	"shopify": "",
+	"tomcat": "username:password"
 	}
 	if other_value[other] != "":
 		return other_value[other]

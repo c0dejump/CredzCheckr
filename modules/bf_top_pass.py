@@ -34,7 +34,7 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, cookie_=F
                             print("  {}Potentially account or username found: {} [{}]".format(found, login, len(req.content)))
                     else:
                         if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                            print("  {}Potentially account or username found: {} [{}b]".format(found, login, len(req.content)))
+                            print("  {}Potentially account or username found: {} [{}b] → [{}b]".format(found, login, fc, len(req.content)))
                         elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
                             print("  {}Account found: {}".format(found, login))
                             #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))

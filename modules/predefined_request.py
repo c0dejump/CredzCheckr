@@ -17,23 +17,30 @@ def first_check(url, username_input, password_input, datas, header, data):
     datas[username_input] = "azefraezfr"
     datas[password_input] = "azefraezfr"
 
+
     if data["infos"]["type"] == "json":
         datas = json.dumps(datas)
 
+    #print(datas)
     req = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=header)
 
+    #print(req.text)
     page_len = len(req.text)
     if req.status_code == 200:
         print("200 ok")
         return page_len
     elif req.status_code in [301, 302]:
         print("30x redirect")
-        req_follow = requests.post(url, data=login, verify=False, allow_redirects=True, timeout=10, headers=UserAgent)
-        req_follow_url = requests.get(req_follow.url, verify=False, timeout=10, headers=UserAgent)
+        req_follow = requests.post(url, data=datas, verify=False, allow_redirects=True, timeout=10, headers=header)
+        req_follow_url = requests.get(req_follow.url, verify=False, timeout=10, headers=header)
         return page_len, len(req_follow_url.text)
     elif req.status_code in [403, 401]:
         print(req.status_code)
         return page_len
+    elif req.status_code in [400]:  
+        contin = input("Return 400 response code continue ? [y:n]")
+        if contin == "y" or contin == "Y":
+            return page_len
     else:
         print(req.status_code)
         sys.exit()
@@ -61,7 +68,7 @@ def predefined_request_send(req_file, bf, wordlist):
         fc = first_check(url, u, p, datas, header, data)
         #print(fc)
 
-        if data["infos"]["method"] == "POST" and data["other_values"] == {} and data["infos"]["type"] != "json":
+        if data["infos"]["method"] == "POST" and data["infos"]["type"] != "json":
             print(" {} Test user-as-pass".format(INFO))
             user_as_pass = adt.default_user_as_pass(url, u, p, fc)
             if not user_as_pass:

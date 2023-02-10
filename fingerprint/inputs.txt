@@ -61,3 +61,7 @@ at_username_field1:at_password_field1
 :adminpw
 lLogin$UserName:lLogin$Password
 USER:PASSWORD
+pf.username:pf.pass
+xuser:xpass
+login_id:login_pass
+SMCLoginForm_Login:SMCLoginForm_Password

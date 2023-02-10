@@ -21,6 +21,7 @@
 124578
 abc123
 admin
+adminer
 admin1
 admin123
 admin123456
@@ -236,3 +237,4 @@ Secret
 zxcvbnm
 info
 dev
+!InterShop00!
