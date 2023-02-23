@@ -12,7 +12,7 @@ UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJ
 
 class all_default_tests:
 
-    def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, basic=False, cookie_=False):
+    def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, nomessage=False, basic=False, cookie_=False):
         payl = ["admin", "adm" "administrateur", "test", "info", "root", "guest", "anonymous", "demo", "manager", "user", "dev", "a'or 1=1#", "a'or 1=1 or'"]
 
         account_found = False
@@ -24,9 +24,15 @@ class all_default_tests:
                 if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
                     print("  {}Potentially account or username found: {}:{}".format(found, p, p))
                     account_found = True
+                elif nomessage and nomessage not in req.text:
+                    print("  {}Potentially account or username found: {}:{} [{}b]".format(found, p, p, len(req.content)))
+                    account_found = True
             else:
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
                     print("  {}Potentially account or username found: {}:{}".format(found, p, p))
+                    account_found = True
+                elif nomessage and nomessage not in req.text:
+                    print("  {}Potentially account or username found: {}:{} [{}b]".format(found, p, p, len(req.content)))
                     account_found = True
                 elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
                     print("  {}Account found: {}:{}".format(found, p, p))
@@ -39,13 +45,15 @@ class all_default_tests:
         return account_found
 
 
-    def test_default_password(self, url, username_input, password_input, username, password, fc, cookie_):
+    def test_default_password(self, url, username_input, password_input, username, password, fc, nomessage, cookie_):
         """
         test_default_password: Test known default password
         """
         login = {username_input: username, password_input: password}
         req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
         if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
+            print("  {}Potentially account or username found: {} [{}b]".format(found, login, fc))
+        elif nomessage and nomessage not in req.text:
             print("  {}Potentially account or username found: {} [{}b]".format(found, login, fc))
         elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
             print("  {}Account found: {}".format(found, login))
@@ -57,7 +65,7 @@ class all_default_tests:
         sys.stdout.write("\033[K")
 
 
-    def default_domain_test(self, url, domain, app_type, cookie_, inputs=False):
+    def default_domain_test(self, url, domain, app_type, cookie_, nomessage=False, inputs=False):
         print(" {} Default domain test".format(INFO))
 
         #username_input, password_input, other_param, other_param_value = check_param(inputs)
@@ -90,6 +98,8 @@ class all_default_tests:
                     req = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
                     print("  {} Potentially account or username found: {}:{}".format(found, user, passwd))
+                elif nomessage and nomessage not in req.text:
+                    print("  {}Potentially account or username found: {} [{}b]".format(found, login, fc))
                 elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
                     print("  {} Account found: {}:{}".format(found, user, passw))
                     sys.exit()

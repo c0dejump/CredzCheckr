@@ -23,16 +23,16 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
         usernames = ["admin", "administrateur", "test", "root", "guest", "anonymous", "tomcat", "manager", "demo", "dev"] if not user_known else [user_known]
 
         if user_known:
-            default_passwords_user = ["{}".format(user_know), "{}@".format(user_know),
-        "{}2016".format(user_know),"{}2017".format(user_know),"{}2018".format(user_know),"{}2019".format(user_know),"{}2020".format(user_know), "{}2021".format(user_know), 
-        "{}2022".format(user_know), "{}2023".format(user_know),
-        "{}2016*".format(user_know),"{}2017*".format(user_know),"{}2018*".format(user_know),"{}2019*".format(user_know),"{}2020*".format(user_know),"{}2021*".format(user_know),
-        "{}2022*".format(user_know), "{}2023*".format(user_know),
-        "{}@2016".format(user_know),"{}@2017".format(user_know),"{}@2018".format(user_know),"{}@2019".format(user_know),"{}@2020".format(user_know),"{}@2021".format(user_know),
-        "{}@2022".format(user_know), "{}@2023".format(user_know),
-        "{}2016!".format(user_know),"{}2017!".format(user_know),"{}2018!".format(user_know),"{}2019!".format(user_know),"{}2020!".format(user_know),"{}2021!".format(user_know),
-        "{}2022!".format(user_know), "{}2023!".format(user_know),
-        "{}123".format(user_know), "{}123!".format(user_know), "{}@123!".format(user_know), "{}@123*".format(user_know)]
+            default_passwords_user = ["{}".format(user_known), "{}@".format(user_known),
+        "{}2016".format(user_known),"{}2017".format(user_known),"{}2018".format(user_known),"{}2019".format(user_known),"{}2020".format(user_known), "{}2021".format(user_known), 
+        "{}2022".format(user_known), "{}2023".format(user_known),
+        "{}2016*".format(user_known),"{}2017*".format(user_known),"{}2018*".format(user_known),"{}2019*".format(user_known),"{}2020*".format(user_known),"{}2021*".format(user_known),
+        "{}2022*".format(user_known), "{}2023*".format(user_known),
+        "{}@2016".format(user_known),"{}@2017".format(user_known),"{}@2018".format(user_known),"{}@2019".format(user_known),"{}@2020".format(user_known),"{}@2021".format(user_known),
+        "{}@2022".format(user_known), "{}@2023".format(user_known),
+        "{}2016!".format(user_known),"{}2017!".format(user_known),"{}2018!".format(user_known),"{}2019!".format(user_known),"{}2020!".format(user_known),"{}2021!".format(user_known),
+        "{}2022!".format(user_known), "{}2023!".format(user_known),
+        "{}123".format(user_known), "{}123!".format(user_known), "{}@123!".format(user_known), "{}@123*".format(user_known)]
             for dpu in default_passwords_user:
                 req = s.post(url, auth=(user_known, dpu), timeout=10, headers=UserAgent)
                 if req.status_code not in [401, 403]:

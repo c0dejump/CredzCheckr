@@ -62,19 +62,20 @@ def test_credz(url, credz_input, adt, type_techno=False):
                     username = d.split(":")[0]
                     password = d.split(":")[1]
                     print(" {} Default credentials: {}:{}".format(INFO, username, password))
-                    tdp = adt.test_default_password(url, username_input, password_input, username, password, fc, cookie_)
+                    tdp = adt.test_default_password(url, username_input, password_input, username, password, fc, nomessage, cookie_)
                 if not tdp and bf:
+                    print(" {} Default credentials don't seem to work".format(action_not_found))
                     for d in default_passwords[dp]:
                         username = d.split(":")[0]
-                        btp = bf_top_password(url, wordlist, username_input, password_input, fc, cookie_, user_known, onlypass, username)
+                        btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass, username)
     if not tdp:
         print("-"*30)
         print(" {} Test user-as-pass".format(INFO))
-        user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, cookie_)
+        user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, nomessage, cookie_)
         if not user_as_pass:
             print(" {} user-as-pass account not found".format(action_not_found))
         if bf:
-            btp = bf_top_password(url, wordlist, username_input, password_input, fc, cookie_, user_known, onlypass)
+            btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass)
             if not btp:
                 print(" {} Default Account not found".format(action_not_found))
 
@@ -89,7 +90,7 @@ def main(url, cookie_, domain=False, cms_value=True):
     if app_type != "web":
         # Launch basic http authent
         if domain:
-            adt.default_domain_test(url, domain, app_type, cookie_)
+            adt.default_domain_test(url, domain, app_type, cookie_, nomessage)
         other_name = fg.other_check(url, http_auth=True)
         http_auth(url, user_known, wordlist, bf, other_name) if other_name else http_auth(url, user_known, wordlist, bf)
     else:
@@ -103,10 +104,10 @@ def main(url, cookie_, domain=False, cms_value=True):
                 if credz_input:
                     req_inputs = requests.get(url, verify=False, timeout=10, headers=UserAgent, cookies=cookie_)
                     if credz_input[0] in req_inputs.text and credz_input[1] in req_inputs.text:
-                        print("      {}Inputs {} found in page".format(INFO, credz_input))
+                        print("      {}Inputs \"{}\" found in page".format(INFO, credz_input))
                         test_credz(url, credz_input, adt, cms_name)
                         if domain:
-                            adt.default_domain_test(url, domain, app_type, cookie_, inputs=credz_input)
+                            adt.default_domain_test(url, domain, app_type, cookie_, nomessage, inputs=credz_input)
                 else:
                     print(" {} CMS template not found".format(action_not_found))
                     main(url, domain=domain, cms_value=False)
@@ -116,18 +117,18 @@ def main(url, cookie_, domain=False, cms_value=True):
                 if len(other_name) > 2:
                     if onlypass:
                         fc = first_check(url, None, other_name)
-                        bf_top_password(url, wordlist, None, other_name, fc, cookie_, user_known, onlypass)
+                        bf_top_password(url, wordlist, None, other_name, fc, nomessage, cookie_, user_known, onlypass)
                     else:   
                         #if there are more 2 parameter to send
                         credz_input = other_input(other_name)
                         test_credz(url, credz_input, adt, other_name)
                         if domain:
-                            adt.default_domain_test(url, domain, app_type, cookie_, inputs=credz_input)
+                            adt.default_domain_test(url, domain, app_type, cookie_, nomessage, inputs=credz_input)
                 elif len(other_name) == 2:
                     credz_input = "{}:{}".format(other_name[0], other_name[1])
                     test_credz(url, credz_input, adt)
                     if domain:
-                        adt.default_domain_test(url, domain, app_type, cookie_, inputs=credz_input)
+                        adt.default_domain_test(url, domain, app_type, cookie_, nomessage, inputs=credz_input)
                 else:
                     print(" {} Nothing template found".format(action_not_found))
         except KeyboardInterrupt:
@@ -156,6 +157,8 @@ if __name__ == '__main__':
     parser.add_argument('--cookie', help="To add cookie", required=False, dest='cookie_')
     parser.add_argument('--onlypass', '--onlypass', help="If there is just only password to test", required=False, dest='onlypass', action="store_true")
     parser.add_argument('--request', help="Json file containing the indications to carry out for a request", dest='req_file')
+    parser.add_argument('--nomessage', help="if the value of this option is not found in the source code of the page it will be considered as potentially found", dest='nomessage')
+
 
 
     results = parser.parse_args()
@@ -172,6 +175,7 @@ if __name__ == '__main__':
     onlypass = results.onlypass
     cookie_ = results.cookie_
     req_file = results.req_file
+    nomessage = results.nomessage
 
     if cookie_:
         cookie_ = {cookie_.split(":")[0]: cookie_.split(":")[1]}
