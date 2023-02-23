@@ -29,6 +29,9 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 	  --onlypass ONLYPASS, --onlypass ONLYPASS
 	                        If there is just only password to test
       --request REQ_FILE    Json file containing the indications to carry out for a request
+      --nomessage NOMESSAGE
+                        if the value of this option is not found in the source code of the page it will be considered as potentially found
+
 
 ```
 
@@ -49,6 +52,9 @@ usage: credzcheckr.py [-h] [-u URL] [-U URLS_FILE] [-uap UAP] [-w WORDLIST] [-b]
 
 	// With specific format requests file
 	python3 credzcheckr.py --request config/request_exemple.json
+
+	// With nomessage option
+	python3 credzcheckr.py -u URL/login.php -b --nomessage "incorrect"
 ```
 
 ![alt tag](https://github.com/c0dejump/CredzCheckr/blob/main/static/bf_credz.png)

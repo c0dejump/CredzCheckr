@@ -66,4 +66,3 @@ xuser:xpass
 login_id:login_pass
 SMCLoginForm_Login:SMCLoginForm_Password
 os_username:os_password
-txtUser:txtPass
