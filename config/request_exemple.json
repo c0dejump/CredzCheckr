@@ -1,20 +1,18 @@
 {
 	"infos": {
-			"url": "https://partenaires.gmf.fr/authentificationPartenairesJSF.faces",
+			"url": "",
 			"method": "POST",
-			"type": "txt" 
+			"type": "txt" //json or txt
 		},
 	"credz_inputs": {
-		"username_input": "form1:inputUid",
-		"password_input": "form1:inputPassword"
+		"_username_input": "j_username",
+		"_password_input": "j_password"
 	},
 	"other_values": {
-		"form1": "form1",
-		"form1:button1.x":"25",
-		"form1:button1.y":"8",
-		"javax.faces.ViewState":"5024555544175061982:-4582914017685813952"
+		"logincontext": "employee" // other value send in post requests
 	},
 	"header": {
-		"User-agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko"
+		"User-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0",
+		"Content-Type": "application/x-www-form-urlencoded"
 	}
 }

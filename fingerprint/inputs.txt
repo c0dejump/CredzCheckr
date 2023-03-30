@@ -66,3 +66,8 @@ xuser:xpass
 login_id:login_pass
 SMCLoginForm_Login:SMCLoginForm_Password
 os_username:os_password
+input_0:input_1
+login_name:passwd
+username:userident
+userName:userPass
+RumpusLoginUserName:RumpusLoginPassword

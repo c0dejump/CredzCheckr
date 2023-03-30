@@ -42,5 +42,6 @@ def first_check(url, username_input, password_input, other_param_value=False):
             print("\033[31m! {} Verify if no need csrf token or other same...\033[0m".format(req.status_code))
             sys.exit()
         else:
+            print(req.text)
             print(req.status_code)
             sys.exit()

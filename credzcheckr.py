@@ -19,6 +19,7 @@ from modules.default_error_page import first_check
 from modules.default_tests import all_default_tests
 from modules.bf_top_pass import bf_top_password
 from modules.predefined_request import predefined_request_send
+from modules.data_request import data_requests
 
 from config.color_config import INFO, found, not_found, action_not_found, action_found
 
@@ -90,7 +91,7 @@ def main(url, cookie_, domain=False, cms_value=True):
     if app_type != "web":
         # Launch basic http authent
         if domain:
-            adt.default_domain_test(url, domain, app_type, cookie_, nomessage)
+            adt.default_domain_test(url, domain, app_type, cookie_, user_known, nomessage)
         other_name = fg.other_check(url, http_auth=True)
         http_auth(url, user_known, wordlist, bf, other_name) if other_name else http_auth(url, user_known, wordlist, bf)
     else:
@@ -107,13 +108,15 @@ def main(url, cookie_, domain=False, cms_value=True):
                         print("      {}Inputs \"{}\" found in page".format(INFO, credz_input))
                         test_credz(url, credz_input, adt, cms_name)
                         if domain:
-                            adt.default_domain_test(url, domain, app_type, cookie_, nomessage, inputs=credz_input)
+                            adt.default_domain_test(url, domain, app_type, cookie_, user_known, nomessage, inputs=credz_input)
                 else:
                     print(" {} CMS template not found".format(action_not_found))
-                    main(url, domain=domain, cms_value=False)
+                    main(url, cookie_, domain=domain, cms_value=False)
             else:
                 other_name = fg.other_check(url, onlypass)
                 # Check if the techno is know and in the db
+                if post_request:
+                    url = post_request
                 if len(other_name) > 2:
                     if onlypass:
                         fc = first_check(url, None, other_name)
@@ -123,12 +126,12 @@ def main(url, cookie_, domain=False, cms_value=True):
                         credz_input = other_input(other_name)
                         test_credz(url, credz_input, adt, other_name)
                         if domain:
-                            adt.default_domain_test(url, domain, app_type, cookie_, nomessage, inputs=credz_input)
+                            adt.default_domain_test(url, domain, app_type, cookie_, user_known, nomessage, inputs=credz_input)
                 elif len(other_name) == 2:
                     credz_input = "{}:{}".format(other_name[0], other_name[1])
                     test_credz(url, credz_input, adt)
                     if domain:
-                        adt.default_domain_test(url, domain, app_type, cookie_, nomessage, inputs=credz_input)
+                        adt.default_domain_test(url, domain, app_type, cookie_, user_known, nomessage, inputs=credz_input)
                 else:
                     print(" {} Nothing template found".format(action_not_found))
         except KeyboardInterrupt:
@@ -149,14 +152,16 @@ if __name__ == '__main__':
     parser.add_argument('-U', '--urls_file', action='store_true', help='Provide file instead of url, one per line.', dest='urls_file')
     parser.add_argument('-w', help="list of your passwords to test \033[32mDefault: credz/wordlists/top_200_default_passwd.txt\033[0m", dest='wordlist', default="credz/wordlists/top_200_default_passwd.txt", action='store_true')
     parser.add_argument('-b', '--bruteforce', help="Bruteforce username/password", action='store_true', dest='bf')
-    parser.add_argument('-i', '--inputs', help="if that not found inputs during the scan, this option add auto in inputs.txt file. Ex: -i \"user:passwd\" ", required=False, dest='inputs')
+    parser.add_argument('-i', '--inputs', help="if that not found inputs during the scan, this option add auto in inputs.txt file. \033[34mEx: -i \"user:passwd\" \033[0m", required=False, dest='inputs')
     parser.add_argument('-k', '--key_words', help="if you want add personal password in list ", required=False, dest='key_words', nargs="*", action="store")
     parser.add_argument('-d', '--domain', help="Add domain to test all combinaison like domain@2019, domain2021...", required=False, dest='domain', action="store")
+    parser.add_argument('-X', help="POST requests URL \033[34mEx: credzcheckr -u toto.com/login -X toto.com/login_check\033[0m", required=False, dest='post_request', action="store")
     parser.add_argument('-uap', '--user-as-pass',  help='test user-as-pass', dest='uap', action='store_true')
     parser.add_argument("--user", help="If you want test just a known username", required=False, dest='user_known', action="store")
     parser.add_argument('--cookie', help="To add cookie", required=False, dest='cookie_')
     parser.add_argument('--onlypass', '--onlypass', help="If there is just only password to test", required=False, dest='onlypass', action="store_true")
-    parser.add_argument('--request', help="Json file containing the indications to carry out for a request", dest='req_file')
+    parser.add_argument('--rf', help="Json file containing the indications to carry out for a request", dest='req_file')
+    parser.add_argument('--rd', help="TXT file containing the data of the requests with 'BFU' & 'BFP' params", dest='req_data')
     parser.add_argument('--nomessage', help="if the value of this option is not found in the source code of the page it will be considered as potentially found", dest='nomessage')
 
 
@@ -175,7 +180,9 @@ if __name__ == '__main__':
     onlypass = results.onlypass
     cookie_ = results.cookie_
     req_file = results.req_file
+    req_data = results.req_data
     nomessage = results.nomessage
+    post_request = results.post_request
 
     if cookie_:
         cookie_ = {cookie_.split(":")[0]: cookie_.split(":")[1]}
@@ -184,11 +191,15 @@ if __name__ == '__main__':
         predefined_request_send(req_file, bf, wordlist)
         sys.exit()
 
-
     if len(sys.argv) < 2:
         print("{}URL target is missing, try using -u <url> or -h for help".format(INFO))
         parser.print_help()
         sys.exit()
+
+    if req_data:
+        data_requests(url, req_data, bf, wordlist)
+        sys.exit()
+
     if inputs:
         with open("fingerprint/inputs.txt", "a+") as add_input:
             add_input.write(inputs+"\n")

@@ -1,6 +1,9 @@
 adm
 admin
 administrateur
+administrator
+monitor
+webadmin
 test
 info
 root
@@ -10,3 +13,4 @@ demo
 manager
 user
 dev
+default

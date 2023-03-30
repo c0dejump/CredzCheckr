@@ -5,6 +5,7 @@ from config.color_config import INFO, found, not_found, action_not_found, action
 from credz.default_password import default_passwords
 import requests
 import sys
+import time
 
 UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko'}
 
@@ -20,7 +21,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
     if other_name == "n":
         account_found = False
 
-        usernames = ["admin", "administrateur", "test", "root", "guest", "anonymous", "tomcat", "manager", "demo", "dev"] if not user_known else [user_known]
+        usernames = ["admin", "administrateur", "administrator", "monitor", "webadmin", "test", "root", "guest", "anonymous", "tomcat", "manager", "demo", "dev"] if not user_known else [user_known]
 
         if user_known:
             default_passwords_user = ["{}".format(user_known), "{}@".format(user_known),
@@ -41,9 +42,10 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                     sys.exit()
         for u in usernames:
             req = s.post(url, auth=(u, u), timeout=10, headers=UserAgent)
+            time
             if req.status_code not in [401, 403, 400, 500]:
                 account_found = True
-                #print(req) #DEBUG
+                print(req) #DEBUG
                 print(" {} Account found: {}:{}".format(action_found, u, u))
                 sys.exit()
             elif req.status_code in [400, 500]:

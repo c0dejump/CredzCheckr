@@ -13,7 +13,8 @@ UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJ
 class all_default_tests:
 
     def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, nomessage=False, basic=False, cookie_=False):
-        payl = ["admin", "adm" "administrateur", "test", "info", "root", "guest", "anonymous", "demo", "manager", "user", "dev", "a'or 1=1#", "a'or 1=1 or'"]
+        payl = ["admin", "adm" "administrateur", "administrator", "monitor", "webadmin", "test", "info", "root", "guest", 
+                "anonymous", "demo", "manager", "user", "dev", "a'or 1=1#", "a'or 1=1 or'"]
 
         account_found = False
         for p in payl:
@@ -65,7 +66,7 @@ class all_default_tests:
         sys.stdout.write("\033[K")
 
 
-    def default_domain_test(self, url, domain, app_type, cookie_, nomessage=False, inputs=False):
+    def default_domain_test(self, url, domain, app_type, cookie_, user_known, nomessage=False, inputs=False):
         print(" {} Default domain test".format(INFO))
 
         #username_input, password_input, other_param, other_param_value = check_param(inputs)
@@ -76,7 +77,7 @@ class all_default_tests:
             fc = len(fc_r.content)
 
 
-        users = ["admin", "adm", "administrateur", "test", "root", "guest", "anonymous", "demo", "manager", "user", "info", domain] if not user_known else [user_default]
+        users = ["admin", "adm", "administrateur", "administrator", "monitor", "webadmin", "test", "root", "guest", "anonymous", "demo", "manager", "user", "info", domain] if not user_known else [user_known]
 
         dico_user_reuse = [
         "{}".format(domain), "{}@".format(domain),
@@ -99,7 +100,7 @@ class all_default_tests:
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
                     print("  {} Potentially account or username found: {}:{}".format(found, user, passwd))
                 elif nomessage and nomessage not in req.text:
-                    print("  {}Potentially account or username found: {} [{}b]".format(found, login, fc))
+                    print("  {} Potentially account or username found: {}:{} [{}b]".format(found, user, passwd, fc))
                 elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
                     print("  {} Account found: {}:{}".format(found, user, passw))
                     sys.exit()

@@ -19,10 +19,14 @@ def first_check(url, username_input, password_input, datas, header, data):
 
 
     if data["infos"]["type"] == "json":
+        datas = dict(sorted(datas.items(), key=lambda x: x[0]))
         datas = json.dumps(datas)
 
-    #print(datas)
-    req = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=header)
+    print("url: {}".format(url))
+    print("datas: {}".format(datas))
+    print("headers: {}\n".format(header))
+    
+    req = requests.post(url, data=datas, headers=header, verify=False, allow_redirects=False, timeout=10)
 
     #print(req.text)
     page_len = len(req.text)
@@ -55,8 +59,8 @@ def predefined_request_send(req_file, bf, wordlist):
 
         url = data["infos"]["url"]
 
-        u = data["credz_inputs"]["username_input"]
-        p = data["credz_inputs"]["password_input"]
+        u = data["credz_inputs"]["_username_input"]
+        p = data["credz_inputs"]["_password_input"]
 
         header = data["header"]
 

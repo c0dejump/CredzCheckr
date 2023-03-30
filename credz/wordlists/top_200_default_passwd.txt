@@ -237,4 +237,14 @@ Secret
 zxcvbnm
 info
 dev
-!InterShop00!
+!root
+monitor
+dbadmin
+webadmin
+CantTouchThis
+dnnadmin
+supervisor
+masterkey
+mysecretpassword0
+mysecretpassword
+P@55w0rd!

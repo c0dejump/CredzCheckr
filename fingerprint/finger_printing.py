@@ -46,7 +46,7 @@ class finger_print:
                     else:
                         return False
             except Exception:
-                traceback.print_exc() #DEBUG
+                #traceback.print_exc() #DEBUG
                 pass
 
 
@@ -58,7 +58,7 @@ class finger_print:
 
         domain = "/".join(url.split("/")[:3])
         url_fav =  "{}favicon.ico".format(domain) if domain[-1] == "/" else "{}/favicon.ico".format(domain)
-        req_fav = requests.get(url_fav, verify=False, timeout=10, allow_redirects=True)
+        req_fav = requests.get(url_fav, verify=False, timeout=10, allow_redirects=True, headers=UserAgent)
         req = requests.get(url, verify=False, timeout=10, allow_redirects=True, headers=UserAgent)
         if req_fav.status_code == 200:
             fav_found = False
