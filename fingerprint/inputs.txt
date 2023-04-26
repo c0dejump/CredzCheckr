@@ -71,3 +71,5 @@ login_name:passwd
 username:userident
 userName:userPass
 RumpusLoginUserName:RumpusLoginPassword
+os_username:os_password
+pf.username:pf.pass

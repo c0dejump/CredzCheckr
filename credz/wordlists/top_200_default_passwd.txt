@@ -166,6 +166,7 @@ Password
 Passw0rd
 passw0rd
 P4ssw0rd
+p4ssw0rD
 P4ssw0rd1
 P4ssw0rd!
 P@ssw0rd
@@ -182,6 +183,7 @@ pass123!
 passwd1
 passwd
 t00r
+MyP4sS
 demo
 motdepasse
 soleil2016

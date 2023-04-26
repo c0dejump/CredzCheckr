@@ -2,12 +2,14 @@ import requests
 import argparse
 import sys, os, re
 import time
+import json
+import traceback
 
 from config.color_config import INFO, found, not_found, action_not_found, action_found
 
 UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko'}
 
-def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage=False, cookie_=False, user_known=False, onlypass=False, username=False):
+def bf_top_password(url, wordlist, username_input, password_input, fc, req_type=False, nomessage=False, cookie_=False, user_known=False, onlypass=False, username=False):
 
     if not onlypass:
         print(" {} Bruteforce username:password".format(INFO))
@@ -34,10 +36,12 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage
             with open(wordlist, "r+") as top_pass:
                 for tp in top_pass.read().splitlines():
                     login = {username_input: user, password_input: tp}
+                    if req_type == "json":
+                        login = json.dumps(login)
                     try:
                         req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
                     except:
-                        traceback.print_exc()
+                        #traceback.print_exc()
                         print(" i Error with {} credentials".format(login))
                         pass
                     if type(fc) != int:

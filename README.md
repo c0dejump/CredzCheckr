@@ -47,7 +47,7 @@ usage: credzcheckr.py [-h] [-u URL] [-U] [-w] [-b] [-i INPUTS] [-k [KEY_WORDS ..
 
 ```
 
-# Exemples
+# Examples
 
 ```
 	//Basic

@@ -47,6 +47,9 @@ def data_requests(url, req_data, bf, wordlist):
     usernames = []
     datas = ""
 
+    s = requests.session()
+    s.verify=False
+
     fc = first_check(url, req_data)
 
     with open("credz/wordlists/top_default_username.txt", "r") as users:
@@ -59,7 +62,7 @@ def data_requests(url, req_data, bf, wordlist):
                 with open(req_data, "r") as read_file:
                     for rf in read_file:
                         datas = rf.replace("BFU", user).replace("BFP", tp)
-                req = requests.post(url, data=datas, verify=False, timeout=10)
+                req = s.post(url, data=datas, timeout=10)
                 if len(req.text) != fc and req.status_code not in [401, 403]:
                     print("  {}Potentially account found: {}:{} [{}b]".format(found, user, tp, len(req.content)))
                 sys.stdout.write("\033[34m{}: {}\033[0m\r".format(user, tp))

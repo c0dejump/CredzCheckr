@@ -39,15 +39,15 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                 if req.status_code not in [401, 403]:
                     account_found = True
                     print(" {} Account found: {}:{}".format(action_found, u, u))
-                    sys.exit()
+                    #sys.exit()
         for u in usernames:
             req = s.post(url, auth=(u, u), timeout=10, headers=UserAgent)
             time
             if req.status_code not in [401, 403, 400, 500]:
                 account_found = True
-                print(req) #DEBUG
+                #print(req) #DEBUG
                 print(" {} Account found: {}:{}".format(action_found, u, u))
-                sys.exit()
+                #sys.exit()
             elif req.status_code in [400, 500]:
                 print(" {} ! Server error please check if the authentification is stable".format(action_not_found))
                 sys.exit()
@@ -58,7 +58,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                     if req.status_code not in [401, 403]:
                         account_found = True
                         print(" {} Account found: {}:{}".format(action_found, user, tp))
-                        sys.exit()
+                        #sys.exit()
                     sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, tp))
                     sys.stdout.write("\033[K")
         if not account_found and bf:
@@ -69,7 +69,8 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                         if req.status_code not in [401, 403]:
                             print("  {} Account found: {}:{}".format(found, user, tp))
                             if not urls_file:
-                                sys.exit()
+                                #sys.exit()
+                                pass
                             return True
                         sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, tp))
                         sys.stdout.write("\033[K")
@@ -84,7 +85,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                         print(req)
                         if req.status_code not in [401, 403]:
                             print("  {}Account found: {}:{}".format(found, user, passwd))
-                            sys.exit()
+                            #sys.exit()
                     except:
                         print(" [!] Error with {}:{}".format(user, passwd))
                         pass
