@@ -40,6 +40,9 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, req_type=
                         login = json.dumps(login)
                     try:
                         req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                    except KeyboardInterrupt:
+                        print("i Canceled by keyboard interrupt (Ctrl-C)")
+                        sys.exit()
                     except:
                         #traceback.print_exc()
                         print(" i Error with {} credentials".format(login))

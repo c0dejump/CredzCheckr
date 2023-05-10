@@ -1,17 +1,16 @@
 {
 	"infos": {
-			"url": "http://rbnainfo.com/admin/ajax/login.php",
+			"url": "URL.com",
 			"method": "POST",
 			"type": "txt"
 		},
 	"credz_inputs": {
-		"_username_input": "username",
-		"_password_input": "password"
+		"_username_input": "j_username",
+		"_password_input": "j_password"
 	},
 	"other_values": {
 	},
 	"header": {
-		"User-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0",
-                "Content-Type": "application/json;charset=utf-8"
+		"User-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
 	}
 }

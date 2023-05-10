@@ -1,7 +1,7 @@
 # CredzCheckr
 Testing default web credentials
 
-### v.1.5
+### v.1.6
 
 # News v1.X
 
@@ -39,7 +39,7 @@ usage: credzcheckr.py [-h] [-u URL] [-U] [-w] [-b] [-i INPUTS] [-k [KEY_WORDS ..
   --onlypass, --onlypass
                         If there is just only password to test
   --rf REQ_FILE         Json file containing the indications to carry out for a request
-  --rd REQ_DATA         TXT file containing the data of the requests with 'BFU' & 'BFP' params (exemple in config/requests_data.txt)
+  --rd REQ_DATA         TXT file containing the data of the requests with 'BFU' for username & 'BFP' for password params (exemple in config/requests_data.txt)
   --nomessage NOMESSAGE
                         if the value of this option is not found in the source code of the page it
                         will be considered as potentially found
