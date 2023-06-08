@@ -40,6 +40,8 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                     account_found = True
                     print(" {} Account found: {}:{}".format(action_found, u, u))
                     #sys.exit()
+        print("-"*30)
+        print(" {} Test user-as-pass".format(INFO))
         for u in usernames:
             req = s.post(url, auth=(u, u), timeout=10, headers=UserAgent)
             time
@@ -51,6 +53,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
             elif req.status_code in [400, 500]:
                 print(" {} ! Server error please check if the authentification is stable".format(action_not_found))
                 sys.exit()
+        print("-"*30)
         for user in usernames:
             with open(wordlist, "r+") as top_pass:
                 for tp in top_pass.read().splitlines():

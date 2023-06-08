@@ -1,12 +1,12 @@
 {
 	"infos": {
-			"url": "URL.com",
+			"url": "YourURL",
 			"method": "POST",
-			"type": "txt"
+			"type": "txt or json"
 		},
 	"credz_inputs": {
-		"_username_input": "j_username",
-		"_password_input": "j_password"
+		"_username_input": "login",
+		"_password_input": "passwd"
 	},
 	"other_values": {
 	},

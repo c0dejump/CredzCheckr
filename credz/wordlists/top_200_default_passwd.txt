@@ -140,7 +140,6 @@ wpsite
 Password1
 password1
 password
-admin
 tomcat
 changethis
 changeme
