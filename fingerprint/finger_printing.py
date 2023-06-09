@@ -29,25 +29,28 @@ class finger_print:
 
 
     def cms_check(self, url, second_test=False):
-        if second_test:
-            url_base = url.split("/")[2] if len(url.split("/")) < 5 else "{}".format("_".join(url.split("/")[2:-1]))
-        else:
-            url_base = "".join(url.split("/")[1:3])
-        if not os.path.exists("fingerprint/CMSeeK/Result/{}/cms.json".format(url)):
-            try:
-                os.system('python3 fingerprint/CMSeeK/cmseek.py -u {} -o --follow-redirect >/dev/null'.format(url_base))
-                with open("fingerprint/CMSeeK/Result/{}/cms.json".format(url_base)) as result:
-                    data = json.load(result)
-                if data["cms_name"] != "":
-                    return data["cms_name"]
-                else:
-                    if not second_test:
-                        self.cms_check(url, second_test=True)
+        try:
+            if second_test:
+                url_base = url.split("/")[2] if len(url.split("/")) < 5 else "{}".format("_".join(url.split("/")[2:-1]))
+            else:
+                url_base = "".join(url.split("/")[1:3])
+            if not os.path.exists("fingerprint/CMSeeK/Result/{}/cms.json".format(url)):
+                try:
+                    os.system('python3 fingerprint/CMSeeK/cmseek.py -u {} -o --follow-redirect >/dev/null'.format(url_base))
+                    with open("fingerprint/CMSeeK/Result/{}/cms.json".format(url_base)) as result:
+                        data = json.load(result)
+                    if data["cms_name"] != "":
+                        return data["cms_name"]
                     else:
-                        return False
-            except Exception:
-                #traceback.print_exc() #DEBUG
-                pass
+                        if not second_test:
+                            self.cms_check(url, second_test=True)
+                        else:
+                            return False
+                except Exception:
+                    #traceback.print_exc() #DEBUG
+                    pass
+        except:
+            pass
 
 
     def other_check(self, url, onlypass=False, http_auth=False):

@@ -91,6 +91,13 @@ def predefined_request_send(req_file, bf, wordlist):
                 if not btp:
                     print(" {} Default Account not found".format(action_not_found))
         elif data["infos"]["method"] == "POST" and data["other_values"] != {} and data["infos"]["type"] == "json":
-            print("In progress")
+            print(" {} Test user-as-pass".format(INFO))
+            user_as_pass = adt.default_user_as_pass(url, u, p, fc, req_type="json")
+            if not user_as_pass:
+                print(" {} user-as-pass account not found".format(action_not_found))
+            if bf:
+                btp = bf_top_password(url, wordlist, u, p, fc, req_type="json")
+                if not btp:
+                    print(" {} Default Account not found".format(action_not_found))
         else:
             print("If you have another case/form of connection do not hesitate to inform me on 'https://github.com/c0dejump/CredzCheckr/issues'")

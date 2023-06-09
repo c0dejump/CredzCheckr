@@ -45,12 +45,12 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
         for u in usernames:
             req = s.post(url, auth=(u, u), timeout=10, headers=UserAgent)
             time
-            if req.status_code not in [401, 403, 400, 500]:
+            if req.status_code not in [401, 403, 400, 500, 503]:
                 account_found = True
                 #print(req) #DEBUG
                 print(" {} Account found: {}:{}".format(action_found, u, u))
                 #sys.exit()
-            elif req.status_code in [400, 500]:
+            elif req.status_code in [400, 500, 503]:
                 print(" {} ! Server error please check if the authentification is stable".format(action_not_found))
                 sys.exit()
         print("-"*30)
