@@ -15,13 +15,15 @@ from config.color_config import INFO, found, not_found, action_not_found, action
 
 requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
-UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko'}
+UserAgent = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0'}
+# If you sure about it was a HTTP authent check on ur burp/network the user-agent syntax like: User-Agent, user-agent....
 
 class finger_print:
 
     def whatisapp(self, url):
         req = requests.get(url, verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
-        if req.status_code in [403, 401] and "WWW-Authenticate" in req.headers:
+        print(req)
+        if req.status_code in [403, 401] and "WWW-Authenticate" in req.headers or "www-authenticate" in req.headers:
             print(" {} Basic authentification".format(INFO))
             return "basic_auth"
         else:

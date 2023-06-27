@@ -95,7 +95,7 @@ def main(url, cookie_, domain=False, cms_value=True):
         other_name = fg.other_check(url, http_auth=True)
         http_auth(url, user_known, wordlist, bf, other_name) if other_name else http_auth(url, user_known, wordlist, bf)
     else:
-        try:   
+        try:
             cms_name = fg.cms_check(url) if cms_value else cms_value
             #Get cms name if that's a CMS
             if cms_name:
@@ -142,7 +142,7 @@ def main(url, cookie_, domain=False, cms_value=True):
                 sys.exit()
             else:
                 print(" {}Canceled by keyboard interrupt (Ctrl-C), next site ".format(INFO))"""
-    print("-"*30)
+    #print("-"*30)
 
 
 if __name__ == '__main__':

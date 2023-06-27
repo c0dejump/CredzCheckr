@@ -61,7 +61,10 @@ def data_requests(url, req_data, bf, wordlist):
             for tp in top_pass.read().splitlines():
                 with open(req_data, "r") as read_file:
                     for rf in read_file:
-                        datas = rf.replace("BFU", user).replace("BFP", tp)
+                        if "BFU" in rf and "BFP" in rf:
+                            datas = rf.replace("BFU", user).replace("BFP", tp)
+                        elif "BFP" in rf and "BFU" not in rf:
+                            datas = rf.replace("BFP", tp)
                 req = s.post(url, data=datas, timeout=10)
                 if len(req.text) != fc and req.status_code not in [401, 403]:
                     print("  {}Potentially account found: {}:{} [{}b]".format(found, user, tp, len(req.content)))

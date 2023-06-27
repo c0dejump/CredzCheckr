@@ -9,7 +9,7 @@ from config.color_config import INFO, found, not_found, action_not_found, action
 
 UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko'}
 
-def bf_top_password(url, wordlist, username_input, password_input, fc, req_type=False, nomessage=False, cookie_=False, user_known=False, onlypass=False, username=False):
+def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage=False, cookie_=False, user_known=False, onlypass=False, req_type=False, username=False):
 
     if not onlypass:
         print(" {} Bruteforce username:password".format(INFO))
@@ -68,28 +68,30 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, req_type=
                     sys.stdout.write("\033[K")
             if user_known:
                 for dpu in default_passwords_user:
-                        login = {username_input: user, password_input: dpu}
-                        try:
-                            req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
-                        except:
-                            print(" i Error with {} credentials".format(login))
-                            pass
-                        if type(fc) != int:
-                            if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
-                                print("  {}Potentially account found: {} [{}b]".format(found, login, len(req.content)))
-                        elif nomessage and nomessage not in req.text:
+                    login = {username_input: user, password_input: dpu}
+                    if req_type == "json":
+                        login = json.dumps(login)
+                    try:
+                        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                    except:
+                        print(" i Error with {} credentials".format(login))
+                        pass
+                    if type(fc) != int:
+                        if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
                             print("  {}Potentially account found: {} [{}b]".format(found, login, len(req.content)))
-                        else:
-                            if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                                print("  {}Potentially account found: {} [{}b] → [{}b]".format(found, login, fc, len(req.content)))
-                            elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
-                                print("  {}Account found: {}".format(found, login))
-                                #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
-                                if not urls_file:
-                                    sys.exit()
+                    elif nomessage and nomessage not in req.text:
+                        print("  {}Potentially account found: {} [{}b]".format(found, login, len(req.content)))
+                    else:
+                        if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
+                            print("  {}Potentially account found: {} [{}b] → [{}b]".format(found, login, fc, len(req.content)))
+                        elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
+                            print("  {}Account found: {}".format(found, login))
+                            #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
+                            if not urls_file:
+                                sys.exit()
                             return True
-                        sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, user, password_input, tp))
-                        sys.stdout.write("\033[K")
+                    sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, user, password_input, dpu))
+                    sys.stdout.write("\033[K")
 
     else:
         print(" {} Bruteforce password".format(INFO))
