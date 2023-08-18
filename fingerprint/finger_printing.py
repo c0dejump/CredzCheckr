@@ -82,6 +82,9 @@ class finger_print:
             if "tomcat" in req.text and http_auth:
                 print(" {} Tomcat found".format(action_found, hash_fav))
                 return "tomcat"
+            if "phpmyadmin" in req.url:
+                print(" {} phpMyAdmin found".format(action_found, hash_fav))
+                return "phpmyadmin"
         if not techno_found:
             print(" {} favicon not found in template database".format(action_not_found))
             if not http_auth:

@@ -94,4 +94,6 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                         pass
                     sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, passwd))
                     sys.stdout.write("\033[K")
+        if bf:
+            http_auth(url, user_known, wordlist, bf, other_name="n")
     print("-"*30)

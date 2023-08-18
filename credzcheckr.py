@@ -11,6 +11,7 @@ from fingerprint.finger_printing import finger_print
 
 from templates.cms_templates import cms_input
 from templates.other_templates import other_input
+from templates.pma_template import pma
 
 from credz.default_password import default_passwords
 
@@ -96,7 +97,7 @@ def main(url, cookie_, domain=False, cms_value=True):
         http_auth(url, user_known, wordlist, bf, other_name) if other_name else http_auth(url, user_known, wordlist, bf)
     else:
         try:
-            cms_name = fg.cms_check(url) if cms_value else cms_value
+            cms_name = False #fg.cms_check(url) if cms_value else cms_value
             #Get cms name if that's a CMS
             if cms_name:
                 print(" {} CMS verification".format(INFO)) 
@@ -117,6 +118,8 @@ def main(url, cookie_, domain=False, cms_value=True):
                 # Check if the techno is know and in the db
                 if post_request:
                     url = post_request
+                if other_name == "phpmyadmin":
+                    pma(url, wordlist, user_known)
                 if len(other_name) > 2:
                     if onlypass:
                         fc = first_check(url, None, other_name)
@@ -150,7 +153,7 @@ if __name__ == '__main__':
 
     parser.add_argument("-u", help="URL login to test \033[31m[required]\033[0m", dest='url')
     parser.add_argument('-U', '--urls_file', action='store_true', help='Provide file instead of url, one per line.', dest='urls_file')
-    parser.add_argument('-w', help="list of your passwords to test \033[32mDefault: credz/wordlists/top_200_default_passwd.txt\033[0m", dest='wordlist', default="credz/wordlists/top_200_default_passwd.txt", action='store_true')
+    parser.add_argument('-w', help="list of your passwords to test \033[32mDefault: credz/wordlists/top_300_default_passwd.txt\033[0m", dest='wordlist', default="credz/wordlists/top_300_default_passwd.txt", action='store_true')
     parser.add_argument('-b', '--bruteforce', help="Bruteforce username/password", action='store_true', dest='bf')
     parser.add_argument('-i', '--inputs', help="if that not found inputs during the scan, this option add auto in inputs.txt file. \033[34mEx: -i \"user:passwd\" \033[0m", required=False, dest='inputs')
     parser.add_argument('-k', '--key_words', help="if you want add personal password in list ", required=False, dest='key_words', nargs="*", action="store")

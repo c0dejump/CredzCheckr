@@ -1,10 +1,12 @@
 # CredzCheckr
 Testing default web credentials
 
-### v.1.6
+### v.1.7
 
 # News v1.X
 
+- pma bf
+- top 300 passwd
 - "rd" option
 - News default usernames, passwords, inputs endpoints
 - fix any bugs
@@ -88,4 +90,5 @@ usage: credzcheckr.py [-h] [-u URL] [-U] [-w] [-b] [-i INPUTS] [-k [KEY_WORDS ..
 - ztgrace for "changeme" tool https://github.com/ztgrace/changeme
 - For other default password wordlist: 
   - https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/default-passwords.txt
+- pma bf based on https://github.com/pendoubleg/phpmyadmin-authentication-bruteforce
 
