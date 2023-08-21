@@ -120,6 +120,7 @@ def main(url, cookie_, domain=False, cms_value=True):
                     url = post_request
                 if other_name == "phpmyadmin":
                     pma(url, wordlist, user_known)
+                    sys.exit()
                 if len(other_name) > 2:
                     if onlypass:
                         fc = first_check(url, None, other_name)

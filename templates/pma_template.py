@@ -46,7 +46,7 @@ def pma(url, wordlist, user_known):
         users = re.split("[\r\n]+", f.read())
         f.close()
     except:
-        users = [user]
+        users = [username]
 
     for user in users:
         for password in passwords:
