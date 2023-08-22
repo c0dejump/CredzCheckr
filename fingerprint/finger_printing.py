@@ -65,6 +65,9 @@ class finger_print:
         url_fav =  "{}favicon.ico".format(domain) if domain[-1] == "/" else "{}/favicon.ico".format(domain)
         req_fav = requests.get(url_fav, verify=False, timeout=10, allow_redirects=True, headers=UserAgent)
         req = requests.get(url, verify=False, timeout=10, allow_redirects=True, headers=UserAgent)
+        if "phpmyadmin" in req.url.lower():
+            print(" {} phpMyAdmin found".format(action_found, hash_fav))
+            return "phpmyadmin"
         if req_fav.status_code == 200:
             fav_found = False
             favicon = codecs.encode(req_fav.content,"base64")
@@ -82,9 +85,6 @@ class finger_print:
             if "tomcat" in req.text and http_auth:
                 print(" {} Tomcat found".format(action_found, hash_fav))
                 return "tomcat"
-            if "phpmyadmin" in req.url:
-                print(" {} phpMyAdmin found".format(action_found, hash_fav))
-                return "phpmyadmin"
         if not techno_found:
             print(" {} favicon not found in template database".format(action_not_found))
             if not http_auth:
