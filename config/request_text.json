@@ -1,0 +1,16 @@
+{
+	"infos": {
+			"url": "URL",
+			"method": "POST",
+			"type": "txt"
+		},
+	"credz_inputs": {
+		"_username_input": "username",
+		"_password_input": "userident"
+	},
+	"other_values": {
+	},
+	"header": {
+		"User-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
+	}
+}
