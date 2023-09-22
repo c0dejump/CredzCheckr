@@ -9,7 +9,7 @@ from config.color_config import INFO, found, not_found, action_not_found, action
 
 UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJB; rv:11.0) like Gecko'}
 
-def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage=False, cookie_=False, user_known=False, onlypass=False, req_type=False, username=False):
+def bf_top_password(url, wordlist, username_input, password_input, fc, header=False, nomessage=False, cookie_=False, user_known=False, onlypass=False, req_type=False, username=False):
 
     if not onlypass:
         print(" {} Bruteforce username:password".format(INFO))
@@ -39,7 +39,7 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage
                     if req_type == "json":
                         login = json.dumps(login)
                     try:
-                        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
                     except KeyboardInterrupt:
                         print("i Canceled by keyboard interrupt (Ctrl-C)")
                         sys.exit()
@@ -49,14 +49,14 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage
                         pass
                     if type(fc) != int:
                         if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
-                            print("  {}Potentially account found: {} [{}b]".format(found, login, len(req.content)))
+                            print("  {} [{}] Potentially account found: {} [{}b]".format(found, req.status_code, login, len(req.content)))
                             #print(req.text)
                     elif nomessage and nomessage not in req.text:
                         print(fc)
-                        print("  {}Potentially account found: {} [{}b]".format(found, login, len(req.content)))
+                        print("  {} [{}] Potentially account found: {} [{}b]".format(found, req.status_code, login, len(req.content)))
                     else:
                         if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                            print("  {}Potentially account found: {} [{}b] → [{}b]".format(found, login, fc, len(req.content)))
+                            print("  {} [{}] Potentially account found: {} [{}b] → [{}b]".format(found, req.status_code, login, fc, len(req.content)))
                             #print(req.text)
                         elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
                             print("  {}Account found: {}".format(found, login))
@@ -72,18 +72,20 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage
                     if req_type == "json":
                         login = json.dumps(login)
                     try:
-                        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
                     except:
                         print(" i Error with {} credentials".format(login))
                         pass
                     if type(fc) != int:
                         if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
-                            print("  {}Potentially account found: {} [{}b]".format(found, login, len(req.content)))
+                            print("  {} [{}] Potentially account found: {} [{}b]".format(found, req.status_code, login, len(req.content)))
                     elif nomessage and nomessage not in req.text:
                         print("  {}Potentially account found: {} [{}b]".format(found, login, len(req.content)))
+                        return True
                     else:
                         if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                            print("  {}Potentially account found: {} [{}b] → [{}b]".format(found, login, fc, len(req.content)))
+                            print("  {} [{}] Potentially account found: {} [{}b] → [{}b]".format(found, req.status_code, login, fc, len(req.content)))
+                            return True
                         elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
                             print("  {}Account found: {}".format(found, login))
                             #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
@@ -98,7 +100,7 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, nomessage
         with open(wordlist, "r+") as top_pass:
             for tp in top_pass.read().splitlines():
                 login = {password_input: tp}
-                req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403, 429]:
                     print("  {}Potentially password: {}".format(found, login))
                 elif len(req.text) not in range(fc - 300, fc + 300) and req.status_code not in [401, 403, 429]:

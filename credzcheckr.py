@@ -71,15 +71,21 @@ def test_credz(url, credz_input, adt, type_techno=False):
                         username = d.split(":")[0]
                         btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass, username)
     if not tdp:
-        print("-"*30)
-        print(" {} Test user-as-pass".format(INFO))
-        user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, nomessage, cookie_)
-        if not user_as_pass:
-            print(" {} user-as-pass account not found".format(action_not_found))
-        if bf:
-            btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass)
+        if not user_known:
+            print("-"*30)
+            print(" {} Test user-as-pass".format(INFO))
+            user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, nomessage, cookie_)
+            if not user_as_pass:
+                print(" {} user-as-pass account not found".format(action_not_found))
+            if bf:
+                btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass)
+                if not btp:
+                    print(" {} Default Account not found".format(action_not_found))
+        else:
+            btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, onlypass, user_known=user_known)
             if not btp:
                 print(" {} Default Account not found".format(action_not_found))
+
 
 
 def main(url, cookie_, domain=False, cms_value=True):

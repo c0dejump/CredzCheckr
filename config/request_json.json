@@ -1,6 +1,6 @@
 {
 	"infos": {
-			"url": "URL",
+			"url": "https://www.bancopsacorporate.com.br/umbraco/backoffice/UmbracoApi/Authentication/PostLogin",
 			"method": "POST",
 			"type": "json"
 		},
@@ -9,8 +9,6 @@
 		"_password_input": "password"
 	},
 	"other_values": {
-        "rememberMe": "false",
-        "country": "FR"
 	},
 	"header": {
 		"User-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0",

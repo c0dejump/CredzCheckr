@@ -74,29 +74,29 @@ def predefined_request_send(req_file, bf, wordlist):
 
         if data["infos"]["method"] == "POST" and data["infos"]["type"] != "json":
             print(" {} Test user-as-pass".format(INFO))
-            user_as_pass = adt.default_user_as_pass(url, u, p, fc)
+            user_as_pass = adt.default_user_as_pass(url, u, p, header, fc)
             if not user_as_pass:
                 print(" {} user-as-pass account not found".format(action_not_found))
             if bf:
-                btp = bf_top_password(url, wordlist, u, p, fc)
+                btp = bf_top_password(url, wordlist, u, p, header, fc)
                 if not btp:
                     print(" {} Default Account not found".format(action_not_found))
         elif data["infos"]["method"] == "POST" and data["other_values"] == {} and data["infos"]["type"] == "json":
             print(" {} Test user-as-pass".format(INFO))
-            user_as_pass = adt.default_user_as_pass(url, u, p, fc, req_type="json")
+            user_as_pass = adt.default_user_as_pass(url, u, p, header, fc, req_type="json")
             if not user_as_pass:
                 print(" {} user-as-pass account not found".format(action_not_found))
             if bf:
-                btp = bf_top_password(url, wordlist, u, p, fc, req_type="json")
+                btp = bf_top_password(url, wordlist, u, p, header, fc, req_type="json")
                 if not btp:
                     print(" {} Default Account not found".format(action_not_found))
         elif data["infos"]["method"] == "POST" and data["other_values"] != {} and data["infos"]["type"] == "json":
             print(" {} Test user-as-pass".format(INFO))
-            user_as_pass = adt.default_user_as_pass(url, u, p, fc, req_type="json")
+            user_as_pass = adt.default_user_as_pass(url, u, p, header, fc, req_type="json")
             if not user_as_pass:
                 print(" {} user-as-pass account not found".format(action_not_found))
             if bf:
-                btp = bf_top_password(url, wordlist, u, p, fc, req_type="json")
+                btp = bf_top_password(url, wordlist, u, p, header, fc, req_type="json")
                 if not btp:
                     print(" {} Default Account not found".format(action_not_found))
         else:

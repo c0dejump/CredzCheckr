@@ -13,7 +13,7 @@ UserAgent = {'User-agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; LCJ
 
 class all_default_tests:
 
-    def default_user_as_pass(self, url, username_input=False, password_input=False, fc=False, nomessage=False, basic=False, cookie_=False, req_type=False):
+    def default_user_as_pass(self, url, username_input=False, password_input=False, header=False, fc=False, nomessage=False, basic=False, cookie_=False, req_type=False):
         payl = ["admin", "adm" "administrateur", "administrator", "monitor", "webadmin", "test", "info", "root", "guest", 
                 "anonymous", "demo", "manager", "user", "dev", "a'or 1=1#", "a'or 1=1 or'"]
 
@@ -23,7 +23,7 @@ class all_default_tests:
             if req_type == "json":
                 login = json.dumps(login)
             try:
-                req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
+                req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
             
                 if type(fc) != int:
                     if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
@@ -58,7 +58,7 @@ class all_default_tests:
         test_default_password: Test known default password
         """
         login = {username_input: username, password_input: password}
-        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+        req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
         if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
             print("  {}Potentially account or username found: {} [{}b]".format(found, login, fc))
         elif nomessage and nomessage not in req.text:
@@ -104,7 +104,7 @@ class all_default_tests:
                     req = requests.post(url, auth=(user, passwd), verify=False, allow_redirects=False, timeout=10)
                 else:
                     datas = {username_input: user, password_input: passwd, other_param: other_param_value} if len(inputs.split(":")) > 2 else {username_input: user, password_input: passwd}
-                    req = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                    req = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
                 if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
                     print("  {} Potentially account or username found: {}:{}".format(found, user, passwd))
                 elif nomessage and nomessage not in req.text:
@@ -113,7 +113,7 @@ class all_default_tests:
                     print("  {} Account found: {}:{}".format(found, user, passw))
                     sys.exit()
                 elif req.status_code in [301, 302]:
-                    req2 = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent, cookies=cookie_)
+                    req2 = requests.post(url, data=datas, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
                     print(req2.headers.get("Location"))
                     if req2.headers.get("Location") != req.headers.get("Location"):
                         print("  {}Account found: {}:{}".format(found, user, passwd))
