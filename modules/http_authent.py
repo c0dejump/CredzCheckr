@@ -57,19 +57,19 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                 sys.exit()
         print("-"*30)
         for user in usernames:
-            with open(wordlist, "r+") as top_pass:
+            with open(wordlist, "r+", encoding='utf-8', errors='ignore') as top_pass:
                 for tp in top_pass.read().splitlines():
                     req = s.post(url, auth=(user, tp), timeout=10, headers=UserAgent)
                     if req.status_code not in [401, 403]:
                         account_found = True
-                        print(" {} [] Account found: {}:{} [{}b]".format(action_found, req.status_code, user, tp, len(req.content)))
+                        print(" {} [{}] Account found: {}:{} [{}b]".format(action_found, req.status_code, user, tp, len(req.content)))
                         #sys.exit()
                     sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, tp))
                     sys.stdout.write("\033[K")
         if not account_found and bf:
             for user in usernames:
                 user = user.replace("\n","")
-                with open(wordlist, "r+") as top_pass:
+                with open(wordlist, "r+", encoding='utf-8', errors='ignore') as top_pass:
                     for tp in top_pass.read().splitlines():
                         if req.status_code not in [401, 403]:
                             print("  {} Account found: {}:{}".format(found, user, tp))

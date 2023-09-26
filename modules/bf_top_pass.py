@@ -33,7 +33,7 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, header=Fa
                 usernames += users
         for user in usernames:
             user = user.replace("\n","")
-            with open(wordlist, "r+") as top_pass:
+            with open(wordlist, "r+", encoding='utf-8', errors='ignore') as top_pass:
                 for tp in top_pass.read().splitlines():
                     login = {username_input: user, password_input: tp}
                     if req_type == "json":
@@ -97,7 +97,7 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, header=Fa
 
     else:
         print(" {} Bruteforce password".format(INFO))
-        with open(wordlist, "r+") as top_pass:
+        with open(wordlist, "r+", encoding='utf-8', errors='ignore') as top_pass:
             for tp in top_pass.read().splitlines():
                 login = {password_input: tp}
                 req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
