@@ -40,11 +40,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                 req = s.post(url, auth=(user_known, dpu), timeout=10, headers=UserAgent)
                 if req.status_code not in [401, 403]:
                     account_found = True
-<<<<<<< HEAD
                     print(" {} [{}] Account found: {}:{} [{}b]".format(action_found, req.status_code, user_known, dpu, len(req.content)))
-=======
-                    print(" {} [] Account found: {}:{} [{}b]".format(action_found, req.status_code, u, u, len(req.content)))
->>>>>>> c3a486dc3f3f1af657a0d38177d2bceae18ccdb1
                     #sys.exit()
         print("-"*30)
         print(" {} Test user-as-pass".format(INFO))
@@ -54,11 +50,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
             if req.status_code not in [401, 403, 400, 500, 503]:
                 account_found = True
                 #print(req) #DEBUG
-<<<<<<< HEAD
                 print(" {} [{}] Account found: {}:{} [{}b]".format(action_found, req.status_code, u, u, len(req.content)))
-=======
-                print(" {} [] Account found: {}:{} [{}b]".format(action_found, req.status_code, u, u, len(req.content)))
->>>>>>> c3a486dc3f3f1af657a0d38177d2bceae18ccdb1
                 #sys.exit()
             elif req.status_code in [400, 500, 503]:
                 print(" {} ! Server error please check if the authentification is stable".format(action_not_found))
