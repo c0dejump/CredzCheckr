@@ -1,0 +1,18 @@
+{
+	"infos": {
+			"url": "https://www.bancopsacorporate.com.br/umbraco/backoffice/UmbracoApi/Authentication/PostLogin",
+			"method": "POST",
+			"type": "json"
+		},
+	"credz_inputs": {
+		"_username_input": "username",
+		"_password_input": "password"
+	},
+	"other_values": {
+	},
+	"header": {
+		"User-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0",
+                "Accept": "application/json",
+                "Content-Type":"application/json"
+	}
+}

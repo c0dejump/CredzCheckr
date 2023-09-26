@@ -173,6 +173,7 @@ passw0rd1
 p4ssw0rd
 p4ssword
 password@123
+Passw@rd123
 password123
 password123!
 pass123
@@ -184,6 +185,7 @@ passwd
 t00r
 MyP4sS
 demo
+demo123
 motdepasse
 soleil2016
 soleil2017

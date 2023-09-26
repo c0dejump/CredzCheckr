@@ -1,0 +1,13 @@
+------WebKitFormBoundaryN26tr4kiBkeMDqBU
+Content-Disposition: form-data; name="login_name"
+
+BFU
+------WebKitFormBoundaryN26tr4kiBkeMDqBU
+Content-Disposition: form-data; name="passwd"
+
+BFP
+------WebKitFormBoundaryN26tr4kiBkeMDqBU
+Content-Disposition: form-data; name="locale_id"
+
+default
+------WebKitFormBoundaryN26tr4kiBkeMDqBU--

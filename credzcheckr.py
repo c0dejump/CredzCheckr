@@ -71,15 +71,21 @@ def test_credz(url, credz_input, adt, type_techno=False):
                         username = d.split(":")[0]
                         btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass, username)
     if not tdp:
-        print("-"*30)
-        print(" {} Test user-as-pass".format(INFO))
-        user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, nomessage, cookie_)
-        if not user_as_pass:
-            print(" {} user-as-pass account not found".format(action_not_found))
-        if bf:
-            btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass)
+        if not user_known:
+            print("-"*30)
+            print(" {} Test user-as-pass".format(INFO))
+            user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, nomessage, cookie_)
+            if not user_as_pass:
+                print(" {} user-as-pass account not found".format(action_not_found))
+            if bf:
+                btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, user_known, onlypass)
+                if not btp:
+                    print(" {} Default Account not found".format(action_not_found))
+        else:
+            btp = bf_top_password(url, wordlist, username_input, password_input, fc, nomessage, cookie_, onlypass, user_known=user_known)
             if not btp:
                 print(" {} Default Account not found".format(action_not_found))
+
 
 
 def main(url, cookie_, domain=False, cms_value=True):
@@ -154,7 +160,7 @@ if __name__ == '__main__':
 
     parser.add_argument("-u", help="URL login to test \033[31m[required]\033[0m", dest='url')
     parser.add_argument('-U', '--urls_file', action='store_true', help='Provide file instead of url, one per line.', dest='urls_file')
-    parser.add_argument('-w', help="list of your passwords to test \033[32mDefault: credz/wordlists/top_300_default_passwd.txt\033[0m", dest='wordlist', default="credz/wordlists/top_300_default_passwd.txt", action='store_true')
+    parser.add_argument('-w', help="list of your passwords to test \033[32mDefault: credz/wordlists/top_300_default_passwd.txt\033[0m", dest='wordlist', default="credz/wordlists/top_300_default_passwd.txt")
     parser.add_argument('-b', '--bruteforce', help="Bruteforce username/password", action='store_true', dest='bf')
     parser.add_argument('-i', '--inputs', help="if that not found inputs during the scan, this option add auto in inputs.txt file. \033[34mEx: -i \"user:passwd\" \033[0m", required=False, dest='inputs')
     parser.add_argument('-k', '--key_words', help="if you want add personal password in list ", required=False, dest='key_words', nargs="*", action="store")

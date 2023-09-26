@@ -80,10 +80,11 @@ usage: credzcheckr.py [-h] [-u URL] [-U] [-w] [-b] [-i INPUTS] [-k [KEY_WORDS ..
 # TODO
 
 - [IP] Different credentials forms
-- [ ] Get nmap file to scan
+- [ ] Get (nmap) file to scan
 - [ ] Captcha bypass
 - [ ] Selenium when javascript do enable
 - [ ] Bruteforce with user@domain.(fr/en...)
+- [ ] MF'er BF (bf as a dirty all possible combinations (have a good cpu) )
 
 # Credits
 

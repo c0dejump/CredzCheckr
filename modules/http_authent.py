@@ -34,11 +34,13 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
         "{}2016!".format(user_known),"{}2017!".format(user_known),"{}2018!".format(user_known),"{}2019!".format(user_known),"{}2020!".format(user_known),"{}2021!".format(user_known),
         "{}2022!".format(user_known), "{}2023!".format(user_known),
         "{}123".format(user_known), "{}123!".format(user_known), "{}@123!".format(user_known), "{}@123*".format(user_known)]
+            print("-"*30)
+            print(" {} Test user mix".format(INFO))
             for dpu in default_passwords_user:
                 req = s.post(url, auth=(user_known, dpu), timeout=10, headers=UserAgent)
                 if req.status_code not in [401, 403]:
                     account_found = True
-                    print(" {} Account found: {}:{}".format(action_found, u, u))
+                    print(" {} [{}] Account found: {}:{} [{}b]".format(action_found, req.status_code, user_known, dpu, len(req.content)))
                     #sys.exit()
         print("-"*30)
         print(" {} Test user-as-pass".format(INFO))
@@ -48,7 +50,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
             if req.status_code not in [401, 403, 400, 500, 503]:
                 account_found = True
                 #print(req) #DEBUG
-                print(" {} Account found: {}:{}".format(action_found, u, u))
+                print(" {} [{}] Account found: {}:{} [{}b]".format(action_found, req.status_code, u, u, len(req.content)))
                 #sys.exit()
             elif req.status_code in [400, 500, 503]:
                 print(" {} ! Server error please check if the authentification is stable".format(action_not_found))
@@ -60,7 +62,7 @@ def http_auth(url, user_known, wordlist, bf, other_name=False):
                     req = s.post(url, auth=(user, tp), timeout=10, headers=UserAgent)
                     if req.status_code not in [401, 403]:
                         account_found = True
-                        print(" {} Account found: {}:{}".format(action_found, user, tp))
+                        print(" {} [] Account found: {}:{} [{}b]".format(action_found, req.status_code, user, tp, len(req.content)))
                         #sys.exit()
                     sys.stdout.write("\033[34muser: {} | password: {}\033[0m\r".format(user, tp))
                     sys.stdout.write("\033[K")

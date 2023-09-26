@@ -8,6 +8,9 @@ test
 info
 root
 guest
+Guest
+network
+NETWORK
 anonymous
 demo
 manager
