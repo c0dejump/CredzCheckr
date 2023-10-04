@@ -75,6 +75,7 @@ usage: credzcheckr.py [-h] [-u URL] [-U] [-w] [-b] [-i INPUTS] [-k [KEY_WORDS ..
 ```
 
 ![alt tag](https://github.com/c0dejump/CredzCheckr/blob/main/static/bf_credz.png)
+![alt tag](https://github.com/c0dejump/CredzCheckr/blob/main/static/bf_phpmyadmin.png)
 
 
 # TODO

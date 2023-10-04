@@ -2,6 +2,7 @@
 import requests
 import html
 import sys, os, re
+from config.color_config import INFO, found, not_found, action_not_found, action_found
 
 def login(url, username, password):
     for i in range(3):
