@@ -21,6 +21,10 @@
 124578
 abc123
 admin
+adm1n
+4dm1n
+adm1n!
+4dm1n!
 adminer
 admin1
 admin123
@@ -289,3 +293,5 @@ Welcome2021!
 Welcome2022!
 Welcome2023!
 pma
+pulsar
+apachepulsar
