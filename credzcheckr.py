@@ -74,7 +74,7 @@ def test_credz(url, credz_input, adt, type_techno=False):
         if not user_known:
             print("-"*30)
             print(" {} Test user-as-pass".format(INFO))
-            user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc, nomessage, cookie_)
+            user_as_pass = adt.default_user_as_pass(url, username_input, password_input, fc=fc, nomessage=nomessage, cookie_=cookie_)
             if not user_as_pass:
                 print(" {} user-as-pass account not found".format(action_not_found))
             if bf:

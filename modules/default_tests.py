@@ -3,6 +3,7 @@ import argparse
 import sys, os, re
 import time
 import json
+import traceback
 
 from config.color_config import INFO, found, not_found, action_not_found, action_found
 
@@ -23,7 +24,10 @@ class all_default_tests:
             if req_type == "json":
                 login = json.dumps(login)
             try:
-                req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_) if not basic else requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent)
+                if not basic:
+                    req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_) 
+                else:
+                    req = requests.post(url, auth=(p, p), verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
             
                 if type(fc) != int:
                     if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
@@ -49,6 +53,7 @@ class all_default_tests:
                 sys.stdout.write("\033[K")
             except:
                 print("Error with: {}".format(login))
+                traceback.print_exc()
                 pass
         return account_found
 
