@@ -1,11 +1,11 @@
 {
 	"infos": {
-			"url": "https://www.bancopsacorporate.com.br/umbraco/backoffice/UmbracoApi/Authentication/PostLogin",
+			"url": "https://xxxxxx.com/cp/login",
 			"method": "POST",
 			"type": "json"
 		},
 	"credz_inputs": {
-		"_username_input": "username",
+		"_username_input": "email",
 		"_password_input": "password"
 	},
 	"other_values": {

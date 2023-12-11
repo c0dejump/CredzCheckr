@@ -18,3 +18,5 @@ user
 dev
 default
 pma
+webmaster
+phpmyadmin

@@ -1,12 +1,12 @@
 {
 	"infos": {
-			"url": "URL",
+			"url": "https://xxxxx.com/login/",
 			"method": "POST",
 			"type": "txt"
 		},
 	"credz_inputs": {
-		"_username_input": "username",
-		"_password_input": "userident"
+		"_username_input": "connexion_login",
+		"_password_input": "connexion_password"
 	},
 	"other_values": {
 	},

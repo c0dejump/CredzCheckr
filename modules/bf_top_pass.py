@@ -40,6 +40,23 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, header=Fa
                         login = json.dumps(login)
                     try:
                         req = requests.post(url, data=login, verify=False, allow_redirects=False, timeout=10, headers=UserAgent if not header else header, cookies=cookie_)
+                        if type(fc) != int:
+                            if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
+                                print("  {} [{}] Potentially account found: {} [{}b]".format(found, req.status_code, login, len(req.content)))
+                                #print(req.text)
+                        elif nomessage and nomessage not in req.text:
+                            print(fc)
+                            print("  {} [{}] Potentially account found: {} [{}b]".format(found, req.status_code, login, len(req.content)))
+                        else:
+                            if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
+                                print("  {} [{}] Potentially account found: {} [{}b] → [{}b]".format(found, req.status_code, login, fc, len(req.content)))
+                                #print(req.text)
+                            elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
+                                print("  {}Account found: {}".format(found, login))
+                                #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
+                                if not urls_file:
+                                    sys.exit()
+                                return True
                     except KeyboardInterrupt:
                         print("i Canceled by keyboard interrupt (Ctrl-C)")
                         sys.exit()
@@ -47,23 +64,6 @@ def bf_top_password(url, wordlist, username_input, password_input, fc, header=Fa
                         #traceback.print_exc()
                         print(" i Error with {} credentials".format(login))
                         pass
-                    if type(fc) != int:
-                        if len(req.text) != fc[0] and len(req.text) != fc[1] and req.status_code not in [401, 403]:
-                            print("  {} [{}] Potentially account found: {} [{}b]".format(found, req.status_code, login, len(req.content)))
-                            #print(req.text)
-                    elif nomessage and nomessage not in req.text:
-                        print(fc)
-                        print("  {} [{}] Potentially account found: {} [{}b]".format(found, req.status_code, login, len(req.content)))
-                    else:
-                        if len(req.text) not in range(fc - 100, fc + 100) and req.status_code not in [401, 403]:
-                            print("  {} [{}] Potentially account found: {} [{}b] → [{}b]".format(found, req.status_code, login, fc, len(req.content)))
-                            #print(req.text)
-                        elif len(req.text) not in range(fc - 200, fc + 200) and req.status_code not in [401, 403]:
-                            print("  {}Account found: {}".format(found, login))
-                            #continue_scan = input(" {} An account was found do you want continue to check another account ? (y:n):".format(INFO))
-                            if not urls_file:
-                                sys.exit()
-                            return True
                     sys.stdout.write("\033[34m{}: {} | {}: {}\033[0m\r".format(username_input, user, password_input, tp))
                     sys.stdout.write("\033[K")
             if user_known:
